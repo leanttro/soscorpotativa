@@ -125,7 +125,7 @@
     {% if post.capa %}
       <img class="img-cover" src="{{ post.capa }}" alt="{{ post.titulo }}">
     {% endif %}
-    <div class="conteudo">{{ post.conteudo }}</div>
+    <div class="conteudo" id="conteudoPost">{{ post.conteudo }}</div>
     <div class="cta-box">
       <strong>Quer levar isso pra sua empresa?</strong>
       <br>
@@ -133,6 +133,18 @@
     </div>
   </div>
 </main>
-<script>lucide.createIcons();</script>
+<script>
+  // remove indentação forçada (tabs/espaços) que vêm do painel, mantendo as quebras de linha
+  (function() {
+    const el = document.getElementById('conteudoPost');
+    if (!el) return;
+    el.textContent = el.textContent
+      .split('\n')
+      .map(linha => linha.replace(/^[\t ]+/, '').replace(/[\t ]+$/, ''))
+      .join('\n')
+      .trim();
+  })();
+  lucide.createIcons();
+</script>
 </body>
 </html>
