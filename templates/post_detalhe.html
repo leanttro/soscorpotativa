@@ -3,8 +3,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ═══════════════════════════════════════════
+     SEO PRIMÁRIO
+═══════════════════════════════════════════ -->
 <title>{{ post.titulo }} | {{ loja.nome }}</title>
-<meta name="description" content="{{ post.resumo or '' }}">
+<meta name="description" content="{{ post.resumo or (post.conteudo or '')[:160] }}">
+{% if post.categoria %}<meta name="keywords" content="{{ post.categoria }}, {{ post.titulo }}, {{ loja.nome }}, saúde mental corporativa, RH estratégico">{% endif %}
+<meta name="author" content="{{ loja.nome }}">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<link rel="canonical" href="https://www.soscorporativa.com.br/{{ loja.slug_url }}/blog/{{ post.slug }}">
+
+<!-- ═══════════════════════════════════════════
+     OPEN GRAPH (Facebook, WhatsApp, LinkedIn)
+═══════════════════════════════════════════ -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="{{ loja.nome }}">
+<meta property="og:title" content="{{ post.titulo }} | {{ loja.nome }}">
+<meta property="og:description" content="{{ post.resumo or (post.conteudo or '')[:160] }}">
+<meta property="og:url" content="https://www.soscorporativa.com.br/{{ loja.slug_url }}/blog/{{ post.slug }}">
+{% if post.capa %}
+<meta property="og:image" content="{{ post.capa }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ post.titulo }}">
+{% endif %}
+<meta property="og:locale" content="pt_BR">
+{% if post.data %}<meta property="article:published_time" content="{{ post.data }}">{% endif %}
+{% if post.categoria %}<meta property="article:section" content="{{ post.categoria }}">{% endif %}
+
+<!-- ═══════════════════════════════════════════
+     TWITTER CARD
+═══════════════════════════════════════════ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ post.titulo }} | {{ loja.nome }}">
+<meta name="twitter:description" content="{{ post.resumo or (post.conteudo or '')[:160] }}">
+{% if post.capa %}<meta name="twitter:image" content="{{ post.capa }}">{% endif %}
+
+<!-- ═══════════════════════════════════════════
+     SCHEMA.ORG JSON-LD — Rich Results Google
+═══════════════════════════════════════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ post.titulo | tojson }},
+  "description": {{ (post.resumo or '') | tojson }},
+  {% if post.capa %}"image": [{{ post.capa | tojson }}],{% endif %}
+  {% if post.data %}"datePublished": {{ post.data | tojson }},{% endif %}
+  "author": { "@type": "Organization", "name": {{ loja.nome | tojson }} },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ loja.nome | tojson }},
+    "logo": { "@type": "ImageObject", "url": "https://res.cloudinary.com/evwhdqmt/image/upload/v1786723590/soslogo_bx4m1y.png" }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.soscorporativa.com.br/{{ loja.slug_url }}/blog/{{ post.slug }}"
+  }
+}
+</script>
+
+<!-- ═══════════════════════════════════════════
+     FAVICON
+═══════════════════════════════════════════ -->
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/evwhdqmt/image/upload/v1786723590/soslogo_bx4m1y.png">
+<link rel="apple-touch-icon" href="https://res.cloudinary.com/evwhdqmt/image/upload/v1786723590/soslogo_bx4m1y.png">
+<meta name="theme-color" content="#1B3A6B">
+
+<!-- ═══════════════════════════════════════════
+     GOOGLE ANALYTICS 4
+═══════════════════════════════════════════ -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1D5C4TX5NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1D5C4TX5NR');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <style>
