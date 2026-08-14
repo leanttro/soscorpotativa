@@ -15,6 +15,13 @@
 <link rel="canonical" href="https://www.soscorporativa.com.br/">
 
 <!-- ═══════════════════════════════════════════
+     FAVICON
+═══════════════════════════════════════════ -->
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/evwhdqmt/image/upload/v1786723590/soslogo_bx4m1y.png">
+<link rel="apple-touch-icon" href="https://res.cloudinary.com/evwhdqmt/image/upload/v1786723590/soslogo_bx4m1y.png">
+<meta name="theme-color" content="#1B3A6B">
+
+<!-- ═══════════════════════════════════════════
      GOOGLE SEARCH CONSOLE — cole aqui sua meta tag de verificação
      Exemplo: <meta name="google-site-verification" content="SEU_CODIGO_AQUI">
 ═══════════════════════════════════════════ -->
@@ -65,9 +72,66 @@
 }
 </script>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O que é a NR-01 e por que minha empresa precisa se adequar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A NR-01 é a Norma Regulamentadora que trata das Disposições Gerais e Gerenciamento de Riscos Ocupacionais. Com as atualizações de 2024, passou a incluir expressamente os riscos psicossociais. Todas as empresas com CLT são obrigadas a se adequar sob pena de autuações, multas e processos trabalhistas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O que é o PBEC e como funciona na prática?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O PBEC (Programa de Bem-Estar Corporativo) é um programa estruturado que reúne uma rede de especialistas em saúde integrativa — terapeutas, nutricionistas, psicanalistas, massoterapeutas e outros — para atender colaboradores dentro do ambiente corporativo ou em plataformas digitais, conforme a necessidade da empresa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como a SOS atua como parceira estratégica de RH?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Atuamos como um RH estratégico terceirizado ou como consultoria especializada — desde o diagnóstico organizacional, passando por recrutamento, cultura, liderança, gestão de performance, até a implantação de políticas de bem-estar. Cada solução é personalizada de acordo com o momento e as necessidades específicas da sua empresa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "A SOS atende empresas de qual porte e segmento?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Atendemos empresas de todos os portes — de pequenas e médias empresas a grandes corporações. Nossa expertise abrange múltiplos segmentos: varejo, serviços, tecnologia, saúde, educação, indústria e outros. A abordagem é sempre customizada para o contexto de cada organização."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como solicitar um orçamento ou diagnóstico inicial?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "É simples! Preencha o formulário de contato nesta página ou fale diretamente pelo WhatsApp. Faremos uma conversa inicial gratuita para entender as necessidades da sua empresa e apresentar as melhores soluções."
+      }
+    }
+  ]
+}
+</script>
+
 <!-- ═══════════════════════════════════════════
-     GOOGLE ANALYTICS 4 — cole seu ID aqui quando tiver
+     GOOGLE ANALYTICS 4
 ═══════════════════════════════════════════ -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1D5C4TX5NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1D5C4TX5NR');
+</script>
 
 <!-- ═══════════════════════════════════════════
      META PIXEL (Facebook) — cole seu ID aqui quando tiver
@@ -2039,6 +2103,30 @@ function toggleFaq(btn) {
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if(!isOpen) item.classList.add('open');
 }
+
+// ─── Ordena os posts do blog por data (mais recentes primeiro)
+(function() {
+  function parseDateBR(str) {
+    // aceita "dd/mm/aaaa" (ou variações com hora depois); retorna timestamp p/ ordenar
+    if (!str) return -Infinity;
+    const m = str.trim().match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (!m) return -Infinity;
+    const [, d, mo, y] = m;
+    return new Date(+y, +mo - 1, +d).getTime();
+  }
+
+  function sortContainer(container) {
+    if (!container) return;
+    const cards = Array.from(container.querySelectorAll('.blog-card'));
+    cards
+      .map(card => ({ card, ts: parseDateBR(card.querySelector('.blog-card-date')?.textContent) }))
+      .sort((a, b) => b.ts - a.ts) // mais recente primeiro
+      .forEach(({ card }) => container.appendChild(card));
+  }
+
+  sortContainer(document.getElementById('blogCarousel'));
+  sortContainer(document.querySelector('#blogGridWrap .blog-grid'));
+})();
 
 // ─── Blog Carrossel
 (function() {
