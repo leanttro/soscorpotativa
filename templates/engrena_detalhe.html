@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-<title>Engrena Meu Bairro | SOS Corporativa</title>
-<meta name="description" content="Engrena Meu Bairro — o diretório de negócios locais do Jardim Aeroporto e região, uma iniciativa SOS Corporativa.">
-<link rel="canonical" href="https://www.soscorporativa.com.br/engrena">
+<title>{{ expositor.nome }} | Engrena Meu Bairro | SOS Corporativa</title>
+<meta name="description" content="{{ expositor.descricao_curta or (expositor.nome ~ ' — conheça no Engrena Meu Bairro, o diretório de negócios locais da SOS Corporativa.') }}">
+<link rel="canonical" href="https://www.soscorporativa.com.br/engrena/{{ expositor.slug }}">
 <link rel="icon" type="image/png" href="https://res.cloudinary.com/evwhdqmt/image/upload/v1786723590/soslogo_bx4m1y.png">
 <meta name="theme-color" content="#1B3A6B">
 
@@ -47,7 +47,7 @@ img { max-width: 100%; display: block; }
 ::-webkit-scrollbar-track { background: var(--cream); }
 ::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; }
 
-/* ─── UTILITÁRIOS ─── */
+/* ─── UTILITÁRIOS (reaproveitados do engrena.html) ─── */
 .container { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
 
 .tag-label {
@@ -95,7 +95,7 @@ img { max-width: 100%; display: block; }
 .reveal-right { opacity: 0; transform: translateX(36px); transition: opacity .7s ease, transform .7s ease; }
 .reveal-right.visible { opacity: 1; transform: none; }
 
-/* ─── NAVBAR (mesmo padrão do site institucional) ─── */
+/* ─── NAVBAR (mesmo padrão do engrena.html) ─── */
 #navbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   padding: .8rem 0;
@@ -139,13 +139,13 @@ img { max-width: 100%; display: block; }
   cursor: pointer; font-size: 1.4rem;
 }
 
-/* ─── HERO ENGRENA ─── */
-#eng-hero {
-  padding: 11rem 0 6rem;
+/* ─── HERO DO EXPOSITOR (variação do #eng-hero) ─── */
+#eng-det-hero {
+  padding: 10rem 0 4.5rem;
   background: linear-gradient(155deg, var(--navy3) 0%, var(--navy) 50%, #24508A 100%);
   position: relative; overflow: hidden;
 }
-.eng-hero-pattern {
+.eng-det-hero-pattern {
   position: absolute; inset: 0;
   background-image:
     radial-gradient(circle at 20% 50%, rgba(184,146,58,0.12) 0%, transparent 50%),
@@ -154,69 +154,67 @@ img { max-width: 100%; display: block; }
     linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 70px 70px, 70px 70px;
 }
-.eng-hero-inner { position: relative; z-index: 2; max-width: 720px; }
-.eng-hero-inner .tag-label { color: var(--gold2); }
-.eng-hero-inner h1 { font-size: clamp(2.4rem,4.5vw,3.6rem); color: #fff; font-weight: 700; margin-bottom: 1.25rem; }
-.eng-hero-inner h1 em { color: var(--gold2); font-style: italic; }
-.eng-hero-inner p { font-size: 1rem; color: rgba(255,255,255,0.68); line-height: 1.9; margin-bottom: 2rem; font-weight: 300; max-width: 560px; }
-.eng-hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-.eng-hero-btn-outline {
+.eng-det-back {
+  position: relative; z-index: 2;
   display: inline-flex; align-items: center; gap: .5rem;
-  background: transparent; color: rgba(255,255,255,0.85);
-  font-family: 'DM Sans',sans-serif; font-weight: 600; font-size: .9rem;
-  padding: .85rem 2rem; border-radius: 6px;
-  border: 1.5px solid rgba(255,255,255,0.2); cursor: pointer; transition: all .3s;
+  color: rgba(255,255,255,0.6); font-size: .85rem; font-weight: 600;
+  margin-bottom: 2rem; transition: color .2s;
 }
-.eng-hero-btn-outline:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+.eng-det-back:hover { color: var(--gold2); }
+.eng-det-inner {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; gap: 2.25rem; flex-wrap: wrap;
+}
+.eng-det-photo {
+  width: 128px; height: 128px; border-radius: 16px; overflow: hidden;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+}
+.eng-det-photo img { width: 100%; height: 100%; object-fit: cover; }
+.eng-det-photo i { color: rgba(255,255,255,0.25); width: 48px; height: 48px; }
+.eng-det-info h1 { font-size: clamp(2rem,4vw,3rem); color: #fff; font-weight: 700; margin-bottom: .85rem; }
+.eng-det-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+.eng-det-tags .eng-chip { background: rgba(255,255,255,0.1); color: #fff; }
+.eng-det-tags .eng-chip.bairro { background: rgba(184,146,58,0.22); color: var(--gold2); }
 
-/* ─── SEÇÕES DE EXPOSITORES ─── */
-.eng-section { padding: 5.5rem 0; }
-.eng-section.alt { background: var(--cream); }
-.eng-section-header {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap;
-}
-.eng-section-header h2 { font-size: clamp(2rem,3vw,2.6rem); color: var(--navy); }
-.eng-section-header p { color: var(--muted); font-size: .93rem; margin-top: .6rem; max-width: 480px; line-height: 1.7; }
+/* ─── CORPO / CONTATO ─── */
+.eng-det-grid { display: grid; grid-template-columns: 1.35fr .9fr; gap: 3rem; align-items: flex-start; }
+.eng-det-desc h2 { font-size: 1.5rem; color: var(--navy); margin-bottom: 1rem; }
+.eng-det-desc p { color: var(--muted); font-size: .97rem; line-height: 1.9; }
+.eng-det-desc-empty { color: var(--muted); font-size: .93rem; font-style: italic; }
 
-/* filtro de bairro */
-.eng-filtro { display: flex; align-items: center; gap: .7rem; }
-.eng-filtro label { font-size: .8rem; font-weight: 600; color: var(--navy); white-space: nowrap; }
-.eng-filtro select {
-  padding: .7rem 1.1rem; border: 1.5px solid var(--border); border-radius: 6px;
-  font-size: .87rem; font-family: 'DM Sans',sans-serif; color: var(--text);
-  background: var(--white); cursor: pointer; outline: none; transition: border-color .2s;
-  min-width: 200px;
+.eng-contato-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 14px;
+  padding: 2rem;
 }
-.eng-filtro select:focus { border-color: var(--navy); }
+.eng-contato-card h3 { font-size: 1.1rem; color: var(--navy); margin-bottom: 1.25rem; }
+.eng-contato-item {
+  display: flex; align-items: flex-start; gap: .85rem;
+  padding: .85rem 0; border-bottom: 1px solid var(--border);
+  font-size: .89rem; color: var(--text); transition: color .2s;
+}
+.eng-contato-item:last-child { border-bottom: none; }
+.eng-contato-item i { color: var(--gold); width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+a.eng-contato-item:hover { color: var(--navy); }
+a.eng-contato-item:hover i { color: var(--navy); }
+.eng-contato-label { display: block; font-size: .72rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .15rem; }
 
-/* grid + card (mesmo estilo visual do produto-card) */
-.eng-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
-.produto-card {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: 12px; overflow: hidden; display: flex;
-  flex-direction: column; transition: all .3s;
+.eng-cupom-box {
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, rgba(184,146,58,0.14), rgba(184,146,58,0.04));
+  border: 2px dashed var(--gold);
+  border-radius: 12px; padding: 1.5rem;
+  text-align: center;
 }
-.produto-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-.produto-img { height: 190px; overflow: hidden; background: var(--navy); }
-.produto-img img { width:100%; height:100%; object-fit:cover; transition: transform .5s; }
-.produto-card:hover .produto-img img { transform: scale(1.05); }
-.produto-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
-.produto-body h3 { font-size: 1.1rem; color: var(--navy); margin-bottom: .5rem; }
-.eng-card-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .8rem; }
-.eng-chip {
-  display: inline-flex; align-items: center; gap: .35rem;
-  background: rgba(27,58,107,0.07); color: var(--navy);
-  font-size: .72rem; font-weight: 600; padding: .3rem .65rem; border-radius: 20px;
+.eng-cupom-box .tag-label { justify-content: center; margin-bottom: .75rem; }
+.eng-cupom-codigo {
+  display: inline-block; background: var(--navy); color: #fff;
+  font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.15rem;
+  letter-spacing: .08em; padding: .55rem 1.4rem; border-radius: 6px; margin-bottom: .85rem;
 }
-.eng-chip.bairro { background: rgba(184,146,58,0.13); color: var(--gold); }
-.produto-body p { font-size: .87rem; color: var(--muted); line-height: 1.7; flex: 1; }
-.servico-link {
-  display: inline-flex; align-items: center; gap: .4rem;
-  color: var(--navy); font-size: .83rem; font-weight: 700;
-  margin-top: 1.25rem; letter-spacing: .02em; transition: gap .2s;
-}
-.produto-card:hover .servico-link { gap: .7rem; color: var(--gold); }
+.eng-cupom-box p { color: var(--text); font-size: .88rem; line-height: 1.7; }
+
+.eng-det-cta { margin-top: 2rem; }
 
 .eng-empty {
   grid-column: 1/-1; text-align: center; padding: 3rem 1rem;
@@ -224,81 +222,14 @@ img { max-width: 100%; display: block; }
   border: 1px dashed var(--border); border-radius: 12px;
 }
 
-/* lista simples (sem foto) — usada em "Meu Bairro" e "Outros Expositores",
-   já que quem se cadastra pelo formulário público não envia foto */
-.eng-list {
-  display: flex; flex-direction: column;
-  border: 1px solid var(--border); border-radius: 12px;
-  overflow: hidden; background: var(--white);
+.eng-chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  background: rgba(27,58,107,0.07); color: var(--navy);
+  font-size: .72rem; font-weight: 600; padding: .3rem .65rem; border-radius: 20px;
 }
-.eng-list-item {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 1.25rem; padding: 1.15rem 1.5rem;
-  border-bottom: 1px solid var(--border); transition: background .2s;
-}
-.eng-list-item:last-child { border-bottom: none; }
-.eng-list-item:hover { background: var(--cream); }
-.eng-list-info h3 {
-  font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
-  color: var(--navy); margin-bottom: .4rem;
-}
-.eng-list-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
-.eng-list-link {
-  display: inline-flex; align-items: center; gap: .4rem; flex-shrink: 0;
-  color: var(--navy); font-size: .83rem; font-weight: 700; transition: gap .2s;
-}
-.eng-list-item:hover .eng-list-link { gap: .7rem; color: var(--gold); }
-.eng-list-empty {
-  text-align: center; padding: 3rem 1rem;
-  color: var(--muted); font-size: .9rem; background: var(--white);
-  border: 1px dashed var(--border); border-radius: 12px;
-}
-@media (max-width: 560px) {
-  .eng-list-item { flex-direction: column; align-items: flex-start; gap: .6rem; }
-  .eng-list-link { align-self: flex-end; }
-}
+.eng-chip.bairro { background: rgba(184,146,58,0.13); color: var(--gold); }
 
-.sep {
-  height: 6px;
-  background: linear-gradient(90deg, var(--navy), var(--gold), var(--navy));
-  opacity: 0.15;
-}
-
-/* ─── FORMULÁRIO DE CADASTRO ─── */
-#eng-cadastro { padding: 6rem 0; background: linear-gradient(155deg, var(--navy3) 0%, var(--navy) 100%); }
-.eng-cad-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 4rem; align-items: flex-start; }
-.eng-cad-info .tag-label { color: var(--gold2); }
-.eng-cad-info h2 { font-size: clamp(2rem,3vw,2.6rem); color: #fff; margin-bottom: 1rem; }
-.eng-cad-info p { color: rgba(255,255,255,0.6); font-size: .95rem; line-height: 1.85; margin-bottom: 1rem; }
-.eng-cad-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: .8rem; }
-.eng-cad-list li { display: flex; align-items: center; gap: .7rem; color: rgba(255,255,255,0.8); font-size: .87rem; }
-.eng-cad-list li i { color: var(--gold2); flex-shrink: 0; }
-
-.form-card {
-  background: var(--white); border-radius: 14px; padding: 2.5rem;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
-}
-.form-card h3 { font-size: 1.5rem; color: var(--navy); margin-bottom: .4rem; }
-.form-card p { color: var(--muted); font-size: .88rem; margin-bottom: 1.75rem; line-height: 1.6; }
-.form-group { margin-bottom: 1.1rem; }
-.form-group label { display: block; font-size: .8rem; font-weight: 600; color: var(--text); margin-bottom: .4rem; }
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%; padding: .85rem 1rem; border: 1.5px solid var(--border); border-radius: 6px;
-  font-family: 'DM Sans',sans-serif; font-size: .89rem; color: var(--text);
-  background: var(--cream); outline: none; transition: border-color .2s, background .2s;
-}
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus { border-color: var(--navy); background: #fff; }
-.form-group textarea { resize: vertical; min-height: 90px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.form-check {
-  display: flex; align-items: flex-start; gap: .6rem; margin-bottom: 1.4rem;
-  font-size: .83rem; color: var(--muted); line-height: 1.5; cursor: pointer;
-}
-.form-check input { width: 17px; height: 17px; margin-top: .1rem; accent-color: var(--navy); flex-shrink: 0; cursor: pointer; }
+.eng-section { padding: 5.5rem 0; }
 
 /* ─── FOOTER (mesmo padrão do site) ─── */
 footer { background: var(--navy3); padding: 5rem 0 0; }
@@ -338,16 +269,13 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
 }
 
 @media(max-width:1024px){
-  .eng-grid { grid-template-columns: 1fr 1fr; }
-  .eng-cad-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .eng-det-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 @media(max-width:768px){
   .nav-links { display:none; }
   .hamburger { display:flex; }
-  .eng-grid { grid-template-columns: 1fr; }
-  .eng-section-header { flex-direction: column; align-items: flex-start; }
-  .form-row { grid-template-columns: 1fr; }
+  .eng-det-inner { flex-direction: column; align-items: flex-start; }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; text-align: center; }
 }
@@ -377,8 +305,8 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
         <li><a href="/">Início</a></li>
         <li><a href="/#servicos-rh">Serviços</a></li>
         <li><a href="/#blog">Blog</a></li>
-        <li><a href="#eng-meu-bairro">Meu Bairro</a></li>
-        <li><a href="#eng-cadastro" class="nav-cta-btn">Cadastre seu negócio</a></li>
+        <li><a href="/engrena">Meu Bairro</a></li>
+        <li><a href="/engrena#eng-cadastro" class="nav-cta-btn">Cadastre seu negócio</a></li>
       </ul>
       <button class="hamburger" onclick="openMobile()" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -387,232 +315,98 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section id="eng-hero">
-  <div class="eng-hero-pattern"></div>
+<!-- ═══ HERO DO EXPOSITOR ═══ -->
+<section id="eng-det-hero">
+  <div class="eng-det-hero-pattern"></div>
   <div class="container">
-    <div class="eng-hero-inner">
-      <span class="tag-label">Uma iniciativa SOS Corporativa</span>
-      <h1>Engrena <em>Meu Bairro</em></h1>
-      <p>
-        O diretório gratuito de negócios locais que conecta moradores e empresas do Jardim Aeroporto e região. Encontre prestadores de confiança perto de você e ajude o comércio do seu bairro a crescer.
-      </p>
-      <div class="eng-hero-actions">
-        <a href="#eng-jardim-aeroporto" class="btn-gold">
-          <i data-lucide="map-pin" style="width:16px;height:16px"></i>
-          Ver expositores
-        </a>
-        <a href="#eng-cadastro" class="eng-hero-btn-outline">
-          <i data-lucide="store" style="width:16px;height:16px"></i>
-          Cadastrar meu negócio
-        </a>
+    <a href="/engrena" class="eng-det-back reveal">
+      <i data-lucide="arrow-left" style="width:15px;height:15px"></i> Voltar para o Engrena
+    </a>
+    <div class="eng-det-inner reveal">
+      <div class="eng-det-photo">
+        {% if expositor.foto %}
+          <img src="{{ expositor.foto }}" alt="{{ expositor.nome }}">
+        {% else %}
+          <i data-lucide="store"></i>
+        {% endif %}
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ ENGRENA JARDIM AEROPORTO (destaque fixo) ═══ -->
-<section class="eng-section" id="eng-jardim-aeroporto">
-  <div class="container">
-    <div class="eng-section-header reveal">
-      <div>
-        <span class="tag-label">Destaque</span>
-        <h2>Engrena Jardim Aeroporto</h2>
-        <p>Os negócios em destaque do nosso bairro-sede, selecionados pela equipe Engrena.</p>
-      </div>
-    </div>
-
-    {% if destaque and destaque|length > 0 %}
-      <div class="eng-grid">
-        {% for e in destaque %}
-        <a href="/engrena/{{ e.slug }}" class="produto-card reveal" style="transition-delay:{{ loop.index0 * 0.08 }}s">
-          <div class="produto-img">
-            {% if e.foto %}
-              <img src="{{ e.foto }}" alt="{{ e.nome }}" loading="lazy">
-            {% else %}
-              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.15)">
-                <i data-lucide="store" style="width:48px;height:48px"></i>
-              </div>
-            {% endif %}
-          </div>
-          <div class="produto-body">
-            <h3>{{ e.nome }}</h3>
-            <div class="eng-card-tags">
-              {% if e.categoria %}<span class="eng-chip"><i data-lucide="tag" style="width:11px;height:11px"></i>{{ e.categoria }}</span>{% endif %}
-              {% if e.bairro %}<span class="eng-chip bairro"><i data-lucide="map-pin" style="width:11px;height:11px"></i>{{ e.bairro }}</span>{% endif %}
-            </div>
-            <p>{{ e.descricao_curta | truncate(110) if e.descricao_curta else '' }}</p>
-            <span class="servico-link">Ver detalhes <i data-lucide="arrow-right" style="width:14px;height:14px"></i></span>
-          </div>
-        </a>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="eng-grid"><div class="eng-empty">Em breve, novos destaques do Jardim Aeroporto.</div></div>
-    {% endif %}
-  </div>
-</section>
-
-<div class="sep"></div>
-
-<!-- ═══ ENGRENA MEU BAIRRO (com filtro) ═══ -->
-<section class="eng-section alt" id="eng-meu-bairro">
-  <div class="container">
-    <div class="eng-section-header reveal">
-      <div>
-        <span class="tag-label">Perto de você</span>
-        <h2>Engrena Meu Bairro</h2>
-        <p>Filtre por bairro e descubra negócios locais de confiança na sua região.</p>
-      </div>
-      <form class="eng-filtro" method="get" action="/engrena">
-        <label for="filtro-bairro">Bairro</label>
-        <select id="filtro-bairro" name="bairro" onchange="this.form.submit()">
-          <option value=""{% if not bairro_filtro %} selected{% endif %}>Todos os bairros</option>
-          {% for b in bairros_disponiveis %}
-          <option value="{{ b }}"{% if bairro_filtro == b %} selected{% endif %}>{{ b }}</option>
-          {% endfor %}
-        </select>
-      </form>
-    </div>
-
-    {% if meu_bairro and meu_bairro|length > 0 %}
-      <div class="eng-grid">
-        {% for e in meu_bairro %}
-        <a href="/engrena/{{ e.slug }}" class="produto-card reveal" style="transition-delay:{{ loop.index0 * 0.06 }}s">
-          <div class="produto-img">
-            {% if e.foto %}
-              <img src="{{ e.foto }}" alt="{{ e.nome }}" loading="lazy">
-            {% else %}
-              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.15)">
-                <i data-lucide="store" style="width:48px;height:48px"></i>
-              </div>
-            {% endif %}
-          </div>
-          <div class="produto-body">
-            <h3>{{ e.nome }}</h3>
-            <div class="eng-card-tags">
-              {% if e.categoria %}<span class="eng-chip"><i data-lucide="tag" style="width:11px;height:11px"></i>{{ e.categoria }}</span>{% endif %}
-              {% if e.bairro %}<span class="eng-chip bairro"><i data-lucide="map-pin" style="width:11px;height:11px"></i>{{ e.bairro }}</span>{% endif %}
-            </div>
-            <p>{{ e.descricao_curta | truncate(110) if e.descricao_curta else '' }}</p>
-            <span class="servico-link">Ver detalhes <i data-lucide="arrow-right" style="width:14px;height:14px"></i></span>
-          </div>
-        </a>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="eng-grid"><div class="eng-empty">
-        {% if bairro_filtro %}Nenhum expositor encontrado em "{{ bairro_filtro }}" ainda.{% else %}Nenhum expositor cadastrado ainda.{% endif %}
-      </div></div>
-    {% endif %}
-  </div>
-</section>
-
-<div class="sep"></div>
-
-<!-- ═══ OUTROS EXPOSITORES ═══ -->
-<section class="eng-section" id="eng-outros">
-  <div class="container">
-    <div class="eng-section-header reveal">
-      <div>
-        <span class="tag-label">Explore mais</span>
-        <h2>Outros Expositores</h2>
-        <p>Mais negócios parceiros do Engrena, de todos os bairros cadastrados.</p>
-      </div>
-    </div>
-
-    {% if outros and outros|length > 0 %}
-      <div class="eng-list">
-        {% for e in outros %}
-        <a href="/engrena/{{ e.slug }}" class="eng-list-item reveal" style="transition-delay:{{ loop.index0 * 0.03 }}s">
-          <div class="eng-list-info">
-            <h3>{{ e.nome }}</h3>
-            <div class="eng-list-tags">
-              {% if e.categoria %}<span class="eng-chip"><i data-lucide="tag" style="width:11px;height:11px"></i>{{ e.categoria }}</span>{% endif %}
-              {% if e.bairro %}<span class="eng-chip bairro"><i data-lucide="map-pin" style="width:11px;height:11px"></i>{{ e.bairro }}</span>{% endif %}
-            </div>
-          </div>
-          <span class="eng-list-link">Ver detalhes <i data-lucide="arrow-right" style="width:14px;height:14px"></i></span>
-        </a>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="eng-list-empty">Nenhum outro expositor cadastrado ainda.</div>
-    {% endif %}
-  </div>
-</section>
-
-<!-- ═══ CADASTRO PÚBLICO ═══ -->
-<section id="eng-cadastro">
-  <div class="container">
-    <div class="eng-cad-grid">
-      <div class="eng-cad-info reveal-left">
-        <span class="tag-label">Faça parte</span>
-        <h2>Cadastre seu negócio no Engrena</h2>
-        <p>É gratuito e leva menos de 2 minutos. Depois de enviado, seu cadastro passa por uma breve análise da nossa equipe antes de aparecer no site.</p>
-        <ul class="eng-cad-list">
-          <li><i data-lucide="check-circle" style="width:16px;height:16px"></i> 100% gratuito, sem taxas</li>
-          <li><i data-lucide="check-circle" style="width:16px;height:16px"></i> Página própria com seus contatos</li>
-          <li><i data-lucide="check-circle" style="width:16px;height:16px"></i> Visibilidade para moradores do bairro</li>
-        </ul>
-      </div>
-
-      <div class="form-card reveal-right">
-        <h3>Cadastro de expositor</h3>
-        <p>Preencha os dados abaixo. Campos com * são obrigatórios.</p>
-        <form id="engrenaForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Nome da empresa *</label>
-              <input type="text" name="nome" required placeholder="Ex: Padaria do Zé">
-            </div>
-            <div class="form-group">
-              <label>Categoria</label>
-              <input type="text" name="categoria" placeholder="Ex: Alimentação">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Bairro</label>
-              <input type="text" name="bairro" placeholder="Ex: Jardim Aeroporto">
-            </div>
-            <div class="form-group">
-              <label>WhatsApp *</label>
-              <input type="tel" name="whatsapp" required placeholder="(11) 99999-9999">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Endereço</label>
-            <input type="text" name="endereco" placeholder="Rua, número, bairro">
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Site</label>
-              <input type="url" name="site" placeholder="https://...">
-            </div>
-            <div class="form-group">
-              <label>Instagram / rede social</label>
-              <input type="text" name="rede_social" placeholder="@seunegocio">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Descrição curta</label>
-            <textarea name="descricao_curta" placeholder="Conte em poucas linhas o que seu negócio oferece..."></textarea>
-          </div>
-          <label class="form-check">
-            <input type="checkbox" name="autorizacao_divulgacao">
-            Autorizo a divulgação dos meus dados no site e materiais do Engrena Meu Bairro.
-          </label>
-          <button type="submit" class="btn-navy" style="width:100%;justify-content:center">
-            <span class="btn-text-wrapper" style="display:inline-flex;align-items:center;gap:.5rem"><i data-lucide="send" style="width:16px;height:16px"></i> Enviar cadastro</span>
-          </button>
-        </form>
-
-        <div id="engrenaSuccessMsg" style="display:none;margin-top:1.5rem;padding:1.25rem 1.5rem;background:rgba(27,58,107,0.07);border:1px solid rgba(27,58,107,0.2);border-radius:10px;text-align:center;font-weight:600;color:var(--navy);align-items:center;justify-content:center;gap:.5rem">
-          <i data-lucide="check-circle" style="width:20px;height:20px;color:#2e7d32;vertical-align:middle;margin-right:.4rem"></i>
-          Cadastro enviado! Nossa equipe vai analisar e publicar em breve.
+      <div class="eng-det-info">
+        <span class="tag-label" style="color:var(--gold2)">Engrena Meu Bairro</span>
+        <h1>{{ expositor.nome }}</h1>
+        <div class="eng-det-tags">
+          {% if expositor.categoria %}<span class="eng-chip"><i data-lucide="tag" style="width:11px;height:11px"></i>{{ expositor.categoria }}</span>{% endif %}
+          {% if expositor.bairro %}<span class="eng-chip bairro"><i data-lucide="map-pin" style="width:11px;height:11px"></i>{{ expositor.bairro }}</span>{% endif %}
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CORPO: DESCRIÇÃO + CONTATO ═══ -->
+<section class="eng-section">
+  <div class="container">
+    <div class="eng-det-grid">
+
+      <div class="eng-det-desc reveal-left">
+        <h2>Sobre o negócio</h2>
+        {% if expositor.descricao_curta %}
+          <p>{{ expositor.descricao_curta }}</p>
+        {% else %}
+          <p class="eng-det-desc-empty">Este expositor ainda não adicionou uma descrição.</p>
+        {% endif %}
+
+        <div class="eng-det-cta">
+          <a href="/engrena" class="btn-outline">
+            <i data-lucide="arrow-left" style="width:16px;height:16px"></i>
+            Voltar para o Engrena
+          </a>
+        </div>
+      </div>
+
+      <div class="eng-contato-card reveal-right">
+        <h3>Contato</h3>
+
+        {% if expositor.whatsapp %}
+        <a class="eng-contato-item" href="https://wa.me/55{{ expositor.whatsapp|replace('(', '')|replace(')', '')|replace('-', '')|replace(' ', '')|replace('+', '') }}" target="_blank" rel="noopener">
+          <i data-lucide="message-circle"></i>
+          <span><span class="eng-contato-label">WhatsApp</span>{{ expositor.whatsapp }}</span>
+        </a>
+        {% endif %}
+
+        {% if expositor.site %}
+        <a class="eng-contato-item" href="{{ expositor.site }}" target="_blank" rel="noopener">
+          <i data-lucide="globe"></i>
+          <span><span class="eng-contato-label">Site</span>{{ expositor.site }}</span>
+        </a>
+        {% endif %}
+
+        {% if expositor.rede_social %}
+        <a class="eng-contato-item" href="{{ expositor.rede_social if expositor.rede_social.startswith('http') else 'https://instagram.com/' ~ expositor.rede_social.lstrip('@') }}" target="_blank" rel="noopener">
+          <i data-lucide="instagram"></i>
+          <span><span class="eng-contato-label">Rede social</span>{{ expositor.rede_social }}</span>
+        </a>
+        {% endif %}
+
+        {% if expositor.endereco %}
+        <div class="eng-contato-item">
+          <i data-lucide="map-pin"></i>
+          <span><span class="eng-contato-label">Endereço</span>{{ expositor.endereco }}</span>
+        </div>
+        {% endif %}
+
+        {% if not expositor.whatsapp and not expositor.site and not expositor.rede_social and not expositor.endereco %}
+        <p style="color:var(--muted);font-size:.87rem">Nenhuma informação de contato cadastrada.</p>
+        {% endif %}
+
+        {% if expositor.cupom_codigo %}
+        <div class="eng-cupom-box">
+          <span class="tag-label">Cupom exclusivo</span>
+          <div class="eng-cupom-codigo">{{ expositor.cupom_codigo }}</div>
+          {% if expositor.cupom_descricao %}<p>{{ expositor.cupom_descricao }}</p>{% endif %}
+        </div>
+        {% endif %}
+      </div>
+
     </div>
   </div>
 </section>
@@ -639,10 +433,10 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
       <div class="footer-col">
         <h4>Engrena</h4>
         <ul>
-          <li><a href="#eng-jardim-aeroporto">Jardim Aeroporto</a></li>
-          <li><a href="#eng-meu-bairro">Meu Bairro</a></li>
-          <li><a href="#eng-outros">Outros Expositores</a></li>
-          <li><a href="#eng-cadastro">Cadastrar meu negócio</a></li>
+          <li><a href="/engrena#eng-jardim-aeroporto">Jardim Aeroporto</a></li>
+          <li><a href="/engrena#eng-meu-bairro">Meu Bairro</a></li>
+          <li><a href="/engrena#eng-outros">Outros Expositores</a></li>
+          <li><a href="/engrena#eng-cadastro">Cadastrar meu negócio</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -670,64 +464,22 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
 
 <!-- WHATSAPP FLUTUANTE -->
 <div class="wa-float">
-  <a href="https://wa.me/55011999470257?text=Olá! Vim pelo Engrena Meu Bairro e gostaria de saber mais." target="_blank" class="wa-btn" aria-label="Falar pelo WhatsApp">
+  <a href="https://wa.me/55011999470257?text=Olá! Vim pela página de {{ expositor.nome }} no Engrena Meu Bairro e gostaria de saber mais." target="_blank" class="wa-btn" aria-label="Falar pelo WhatsApp">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.119.554 4.107 1.523 5.836L.057 23.925 6.29 22.48A11.939 11.939 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.659-.503-5.184-1.381l-.372-.22-3.866.95.994-3.756-.243-.386A9.94 9.94 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" fill-rule="evenodd" clip-rule="evenodd"/></svg>
   </a>
 </div>
 
 <script>
-// ─── Lucide Icons
 lucide.createIcons();
 
-// ─── Mobile menu
 function openMobile() { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow='hidden'; }
 function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow=''; }
 
-// ─── Reveal on scroll
 const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
 const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
 }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
 revealEls.forEach(el => revealObs.observe(el));
-
-// ─── Formulário de cadastro público (mesmo esquema do leadForm institucional)
-const engrenaForm = document.getElementById('engrenaForm');
-if (engrenaForm) {
-  engrenaForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn = this.querySelector('button[type=submit]');
-    const textWrapper = btn.querySelector('.btn-text-wrapper');
-    const originalHTML = textWrapper.innerHTML;
-
-    textWrapper.innerHTML = 'ENVIANDO...';
-    btn.disabled = true;
-
-    const formData = new FormData(this);
-    try {
-      const response = await fetch('/engrena/cadastro', {
-        method: 'POST',
-        body: formData
-      });
-      const result = await response.json();
-      if (result.sucesso || response.ok) {
-        this.style.display = 'none';
-        const successMsg = document.getElementById('engrenaSuccessMsg');
-        successMsg.style.display = 'flex';
-        lucide.createIcons();
-      } else {
-        alert(result.erro || 'Erro ao enviar. Tente novamente.');
-        textWrapper.innerHTML = originalHTML;
-        btn.disabled = false;
-        lucide.createIcons();
-      }
-    } catch(err) {
-      alert('Erro de conexão. Verifique sua internet e tente novamente.');
-      textWrapper.innerHTML = originalHTML;
-      btn.disabled = false;
-      lucide.createIcons();
-    }
-  });
-}
 </script>
 </body>
 </html>
