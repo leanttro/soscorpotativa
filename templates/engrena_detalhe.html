@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+<title>{{ expositor.nome }} | Engrena Meu Bairro | SOS Corporativa</title>
+<meta name="description" content="{{ expositor.descricao_curta or (expositor.nome ~ ' — conheça no Engrena Meu Bairro, o diretório de negócios locais da SOS Corporativa.') }}">
+<link rel="canonical" href="https://www.soscorporativa.com.br/engrena/{{ expositor.slug }}">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/evwhdqmt/image/upload/v1786723590/soslogo_bx4m1y.png">
+<meta name="theme-color" content="#1B3A6B">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+<style>
+:root {
+  --navy:    #1B3A6B;
+  --navy2:   #142d54;
+  --navy3:   #0d2040;
+  --gold:    #B8923A;
+  --gold2:   #d4a84b;
+  --cream:   #F8F6F1;
+  --cream2:  #F0EDE6;
+  --white:   #FFFFFF;
+  --text:    #1C2B3A;
+  --muted:   #6B7A8D;
+  --border:  #E2DDD6;
+  --teal:    #1B3A6B;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--text);
+  overflow-x: hidden;
+}
+h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; line-height: 1.15; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; }
+
+/* ─── UTILITÁRIOS (reaproveitados do engrena.html) ─── */
+.container { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+
+.tag-label {
+  display: inline-flex; align-items: center; gap: .5rem;
+  color: var(--gold); font-size: .72rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.tag-label::before {
+  content:''; width: 28px; height: 2px; background: var(--gold);
+}
+
+.btn-navy {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--navy); color: #fff;
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: .9rem;
+  padding: .85rem 2rem; border-radius: 6px;
+  transition: all .3s; border: none; cursor: pointer; letter-spacing: .02em;
+}
+.btn-navy:hover { background: var(--navy2); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(27,58,107,0.3); }
+
+.btn-gold {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--gold); color: #fff;
+  font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: .9rem;
+  padding: .85rem 2rem; border-radius: 6px;
+  border: none; cursor: pointer; transition: all .3s; letter-spacing: .02em;
+}
+.btn-gold:hover { background: var(--gold2); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(184,146,58,0.35); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: transparent; color: var(--navy);
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: .9rem;
+  padding: .85rem 2rem; border-radius: 6px;
+  border: 2px solid var(--navy); cursor: pointer; transition: all .3s;
+}
+.btn-outline:hover { background: var(--navy); color: #fff; }
+
+/* ─── ANIMAÇÕES ─── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-left { opacity: 0; transform: translateX(-36px); transition: opacity .7s ease, transform .7s ease; }
+.reveal-left.visible { opacity: 1; transform: none; }
+.reveal-right { opacity: 0; transform: translateX(36px); transition: opacity .7s ease, transform .7s ease; }
+.reveal-right.visible { opacity: 1; transform: none; }
+
+/* ─── NAVBAR (mesmo padrão do engrena.html) ─── */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: .8rem 0;
+  transition: all .4s;
+  background: rgba(13,32,64,0.97);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; }
+.nav-logo img { height: 48px; object-fit: contain; filter: brightness(0) invert(1); }
+.nav-logo-text { font-family: 'Cormorant Garamond', serif; color: #fff; font-size: 1.4rem; font-weight: 700; }
+.nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; }
+.nav-links a { color: rgba(255,255,255,0.88); font-weight: 500; font-size: .88rem; transition: color .2s; letter-spacing: .01em; }
+.nav-links a:hover { color: #fff; }
+.nav-cta-btn {
+  background: var(--gold) !important; color: #fff !important;
+  padding: .5rem 1.25rem !important; border-radius: 6px !important;
+  font-size: .85rem !important;
+}
+.nav-cta-btn:hover { background: var(--gold2) !important; color: #fff !important; }
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: #fff; transition: all .3s; border-radius: 2px; }
+
+.mobile-menu {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--navy3); z-index: 999; padding: 6rem 2.5rem 2rem;
+  flex-direction: column; gap: 0;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: rgba(255,255,255,0.75); font-size: 1.4rem;
+  font-family: 'Cormorant Garamond', serif; font-weight: 500;
+  padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: color .2s;
+}
+.mobile-menu a:hover { color: var(--gold2); }
+.close-menu {
+  position: absolute; top: 1.5rem; right: 1.5rem;
+  background: none; border: none; color: rgba(255,255,255,0.6);
+  cursor: pointer; font-size: 1.4rem;
+}
+
+/* ─── HERO DO EXPOSITOR (variação do #eng-hero) ─── */
+#eng-det-hero {
+  padding: 10rem 0 4.5rem;
+  background: linear-gradient(155deg, var(--navy3) 0%, var(--navy) 50%, #24508A 100%);
+  position: relative; overflow: hidden;
+}
+.eng-det-hero-pattern {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(184,146,58,0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 40%),
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 70px 70px, 70px 70px;
+}
+.eng-det-back {
+  position: relative; z-index: 2;
+  display: inline-flex; align-items: center; gap: .5rem;
+  color: rgba(255,255,255,0.6); font-size: .85rem; font-weight: 600;
+  margin-bottom: 2rem; transition: color .2s;
+}
+.eng-det-back:hover { color: var(--gold2); }
+.eng-det-inner {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; gap: 2.25rem; flex-wrap: wrap;
+}
+.eng-det-photo {
+  width: 128px; height: 128px; border-radius: 16px; overflow: hidden;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+}
+.eng-det-photo img { width: 100%; height: 100%; object-fit: cover; }
+.eng-det-photo i { color: rgba(255,255,255,0.25); width: 48px; height: 48px; }
+.eng-det-info h1 { font-size: clamp(2rem,4vw,3rem); color: #fff; font-weight: 700; margin-bottom: .85rem; }
+.eng-det-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+.eng-det-tags .eng-chip { background: rgba(255,255,255,0.1); color: #fff; }
+.eng-det-tags .eng-chip.bairro { background: rgba(184,146,58,0.22); color: var(--gold2); }
+
+/* ─── CORPO / CONTATO ─── */
+.eng-det-grid { display: grid; grid-template-columns: 1.35fr .9fr; gap: 3rem; align-items: flex-start; }
+.eng-det-desc h2 { font-size: 1.5rem; color: var(--navy); margin-bottom: 1rem; }
+.eng-det-desc p { color: var(--muted); font-size: .97rem; line-height: 1.9; }
+.eng-det-desc-empty { color: var(--muted); font-size: .93rem; font-style: italic; }
+
+.eng-contato-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 14px;
+  padding: 2rem;
+}
+.eng-contato-card h3 { font-size: 1.1rem; color: var(--navy); margin-bottom: 1.25rem; }
+.eng-contato-item {
+  display: flex; align-items: flex-start; gap: .85rem;
+  padding: .85rem 0; border-bottom: 1px solid var(--border);
+  font-size: .89rem; color: var(--text); transition: color .2s;
+}
+.eng-contato-item:last-child { border-bottom: none; }
+.eng-contato-item i { color: var(--gold); width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+a.eng-contato-item:hover { color: var(--navy); }
+a.eng-contato-item:hover i { color: var(--navy); }
+.eng-contato-label { display: block; font-size: .72rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .15rem; }
+
+.eng-cupom-box {
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, rgba(184,146,58,0.14), rgba(184,146,58,0.04));
+  border: 2px dashed var(--gold);
+  border-radius: 12px; padding: 1.5rem;
+  text-align: center;
+}
+.eng-cupom-box .tag-label { justify-content: center; margin-bottom: .75rem; }
+.eng-cupom-codigo {
+  display: inline-block; background: var(--navy); color: #fff;
+  font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.15rem;
+  letter-spacing: .08em; padding: .55rem 1.4rem; border-radius: 6px; margin-bottom: .85rem;
+}
+.eng-cupom-box p { color: var(--text); font-size: .88rem; line-height: 1.7; }
+
+.eng-det-cta { margin-top: 2rem; }
+
+.eng-empty {
+  grid-column: 1/-1; text-align: center; padding: 3rem 1rem;
+  color: var(--muted); font-size: .9rem; background: var(--white);
+  border: 1px dashed var(--border); border-radius: 12px;
+}
+
+.eng-chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  background: rgba(27,58,107,0.07); color: var(--navy);
+  font-size: .72rem; font-weight: 600; padding: .3rem .65rem; border-radius: 20px;
+}
+.eng-chip.bairro { background: rgba(184,146,58,0.13); color: var(--gold); }
+
+.eng-section { padding: 5.5rem 0; }
+
+/* ─── FOOTER (mesmo padrão do site) ─── */
+footer { background: var(--navy3); padding: 5rem 0 0; }
+.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 3.5rem; }
+.footer-brand img { height: 48px; margin-bottom: 1rem; filter: brightness(0) invert(1); }
+.footer-brand p { color: rgba(255,255,255,0.4); font-size: .85rem; line-height: 1.75; margin-bottom: 1.5rem; }
+.footer-social { display: flex; gap: .65rem; }
+.footer-social a {
+  width: 34px; height: 34px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6);
+  transition: all .2s;
+}
+.footer-social a:hover { border-color: var(--gold); color: var(--gold); }
+.footer-col h4 { color: #fff; font-size: .82rem; font-weight: 700; margin-bottom: 1.25rem; letter-spacing: .06em; text-transform: uppercase; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+.footer-col ul li a { color: rgba(255,255,255,0.4); font-size: .83rem; transition: color .2s; }
+.footer-col ul li a:hover { color: var(--gold2); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08); padding: 1.5rem 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.footer-bottom p { color: rgba(255,255,255,0.28); font-size: .78rem; }
+.footer-bottom a { color: rgba(255,255,255,0.45); transition: color .2s; }
+.footer-bottom a:hover { color: var(--gold2); }
+
+.wa-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 900; }
+.wa-btn {
+  width: 58px; height: 58px; border-radius: 50%;
+  background: #25D366; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 25px rgba(37,211,102,0.45); transition: all .3s;
+  animation: waPulse 2.5s ease-in-out infinite;
+}
+.wa-btn:hover { transform: scale(1.1); }
+@keyframes waPulse {
+  0%,100%{box-shadow:0 8px 25px rgba(37,211,102,0.45)}
+  50%{box-shadow:0 8px 40px rgba(37,211,102,0.7),0 0 0 10px rgba(37,211,102,0.08)}
+}
+
+@media(max-width:1024px){
+  .eng-det-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width:768px){
+  .nav-links { display:none; }
+  .hamburger { display:flex; }
+  .eng-det-inner { flex-direction: column; align-items: flex-start; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="closeMobile()" aria-label="Fechar">✕</button>
+  <a href="/" onclick="closeMobile()">Início</a>
+  <a href="/#servicos-rh" onclick="closeMobile()">Serviços</a>
+  <a href="/#blog" onclick="closeMobile()">Blog</a>
+  <a href="/engrena" onclick="closeMobile()" style="color:var(--gold2)">Engrena Meu Bairro</a>
+  <a href="/#contato" onclick="closeMobile()">Fale Conosco</a>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="https://res.cloudinary.com/evwhdqmt/image/upload/v1786723590/soslogo_bx4m1y.png" alt="SOS Corporativa" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="nav-logo-text" style="display:none">SOS Corporativa</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Início</a></li>
+        <li><a href="/#servicos-rh">Serviços</a></li>
+        <li><a href="/#blog">Blog</a></li>
+        <li><a href="/engrena">Meu Bairro</a></li>
+        <li><a href="/engrena#eng-cadastro" class="nav-cta-btn">Cadastre seu negócio</a></li>
+      </ul>
+      <button class="hamburger" onclick="openMobile()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO DO EXPOSITOR ═══ -->
+<section id="eng-det-hero">
+  <div class="eng-det-hero-pattern"></div>
+  <div class="container">
+    <a href="/engrena" class="eng-det-back reveal">
+      <i data-lucide="arrow-left" style="width:15px;height:15px"></i> Voltar para o Engrena
+    </a>
+    <div class="eng-det-inner reveal">
+      <div class="eng-det-photo">
+        {% if expositor.foto %}
+          <img src="{{ expositor.foto }}" alt="{{ expositor.nome }}">
+        {% else %}
+          <i data-lucide="store"></i>
+        {% endif %}
+      </div>
+      <div class="eng-det-info">
+        <span class="tag-label" style="color:var(--gold2)">Engrena Meu Bairro</span>
+        <h1>{{ expositor.nome }}</h1>
+        <div class="eng-det-tags">
+          {% if expositor.categoria %}<span class="eng-chip"><i data-lucide="tag" style="width:11px;height:11px"></i>{{ expositor.categoria }}</span>{% endif %}
+          {% if expositor.bairro %}<span class="eng-chip bairro"><i data-lucide="map-pin" style="width:11px;height:11px"></i>{{ expositor.bairro }}</span>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CORPO: DESCRIÇÃO + CONTATO ═══ -->
+<section class="eng-section">
+  <div class="container">
+    <div class="eng-det-grid">
+
+      <div class="eng-det-desc reveal-left">
+        <h2>Sobre o negócio</h2>
+        {% if expositor.descricao_curta %}
+          <p>{{ expositor.descricao_curta }}</p>
+        {% else %}
+          <p class="eng-det-desc-empty">Este expositor ainda não adicionou uma descrição.</p>
+        {% endif %}
+
+        <div class="eng-det-cta">
+          <a href="/engrena" class="btn-outline">
+            <i data-lucide="arrow-left" style="width:16px;height:16px"></i>
+            Voltar para o Engrena
+          </a>
+        </div>
+      </div>
+
+      <div class="eng-contato-card reveal-right">
+        <h3>Contato</h3>
+
+        {% if expositor.whatsapp %}
+        <a class="eng-contato-item" href="https://wa.me/55{{ expositor.whatsapp|replace('(', '')|replace(')', '')|replace('-', '')|replace(' ', '')|replace('+', '') }}" target="_blank" rel="noopener">
+          <i data-lucide="message-circle"></i>
+          <span><span class="eng-contato-label">WhatsApp</span>{{ expositor.whatsapp }}</span>
+        </a>
+        {% endif %}
+
+        {% if expositor.site %}
+        <a class="eng-contato-item" href="{{ expositor.site }}" target="_blank" rel="noopener">
+          <i data-lucide="globe"></i>
+          <span><span class="eng-contato-label">Site</span>{{ expositor.site }}</span>
+        </a>
+        {% endif %}
+
+        {% if expositor.rede_social %}
+        <a class="eng-contato-item" href="{{ expositor.rede_social if expositor.rede_social.startswith('http') else 'https://instagram.com/' ~ expositor.rede_social.lstrip('@') }}" target="_blank" rel="noopener">
+          <i data-lucide="instagram"></i>
+          <span><span class="eng-contato-label">Rede social</span>{{ expositor.rede_social }}</span>
+        </a>
+        {% endif %}
+
+        {% if expositor.endereco %}
+        <div class="eng-contato-item">
+          <i data-lucide="map-pin"></i>
+          <span><span class="eng-contato-label">Endereço</span>{{ expositor.endereco }}</span>
+        </div>
+        {% endif %}
+
+        {% if not expositor.whatsapp and not expositor.site and not expositor.rede_social and not expositor.endereco %}
+        <p style="color:var(--muted);font-size:.87rem">Nenhuma informação de contato cadastrada.</p>
+        {% endif %}
+
+        {% if expositor.cupom_codigo %}
+        <div class="eng-cupom-box">
+          <span class="tag-label">Cupom exclusivo</span>
+          <div class="eng-cupom-codigo">{{ expositor.cupom_codigo }}</div>
+          {% if expositor.cupom_descricao %}<p>{{ expositor.cupom_descricao }}</p>{% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="https://res.cloudinary.com/evwhdqmt/image/upload/v1786723590/soslogo_bx4m1y.png" alt="SOS Corporativa">
+        <p>Engrena Meu Bairro é uma iniciativa da SOS Corporativa para fortalecer o comércio local do Jardim Aeroporto e região.</p>
+        <div class="footer-social">
+          <a href="https://instagram.com/soscorporativa" target="_blank" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://wa.me/55011999470257" target="_blank" aria-label="WhatsApp">
+            <i data-lucide="message-circle" style="width:15px;height:15px"></i>
+          </a>
+          <a href="mailto:contato@soscorporativa.com.br" aria-label="E-mail">
+            <i data-lucide="mail" style="width:15px;height:15px"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Engrena</h4>
+        <ul>
+          <li><a href="/engrena#eng-jardim-aeroporto">Jardim Aeroporto</a></li>
+          <li><a href="/engrena#eng-meu-bairro">Meu Bairro</a></li>
+          <li><a href="/engrena#eng-outros">Outros Expositores</a></li>
+          <li><a href="/engrena#eng-cadastro">Cadastrar meu negócio</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SOS Corporativa</h4>
+        <ul>
+          <li><a href="/">Início</a></li>
+          <li><a href="/#servicos-rh">Serviços</a></li>
+          <li><a href="/#blog">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="https://wa.me/55011999470257" target="_blank">(11) 99947-0257</a></li>
+          <li><a href="mailto:contato@soscorporativa.com.br">contato@soscorporativa.com.br</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 SOS Corporativa. Todos os direitos reservados.</p>
+      <p>Desenvolvido por <a href="https://leanttro.com" target="_blank">Leanttro</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLUTUANTE -->
+<div class="wa-float">
+  <a href="https://wa.me/55011999470257?text=Olá! Vim pela página de {{ expositor.nome }} no Engrena Meu Bairro e gostaria de saber mais." target="_blank" class="wa-btn" aria-label="Falar pelo WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.119.554 4.107 1.523 5.836L.057 23.925 6.29 22.48A11.939 11.939 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.659-.503-5.184-1.381l-.372-.22-3.866.95.994-3.756-.243-.386A9.94 9.94 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" fill-rule="evenodd" clip-rule="evenodd"/></svg>
+  </a>
+</div>
+
+<script>
+lucide.createIcons();
+
+function openMobile() { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow=''; }
+
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+revealEls.forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>
