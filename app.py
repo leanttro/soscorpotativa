@@ -235,22 +235,35 @@ def _gerar_slug_unico_expositor(nome):
 def engrena_index():
     bairro_filtro = request.args.get("bairro", "").strip()
 
+    # Destaque fixo — Jardim Aeroporto (com foto, curado pelo admin)
     destaque = (
         Expositor.query.filter_by(status="aprovado", destaque=True)
         .order_by(Expositor.nome.asc())
         .all()
     )
 
-    query_bairro = Expositor.query.filter_by(status="aprovado", destaque=False)
+    # Meu Bairro — com foto, sem ser do destaque Jardim Aeroporto.
+    # É a foto que o admin adiciona manualmente que faz o expositor
+    # aparecer aqui (com card e imagem). Filtrável por bairro.
+    query_com_foto = Expositor.query.filter(
+        Expositor.status == "aprovado",
+        Expositor.destaque == False,
+        Expositor.foto.isnot(None),
+        Expositor.foto != "",
+    )
     if bairro_filtro:
-        query_bairro = query_bairro.filter(Expositor.bairro == bairro_filtro)
-    meu_bairro = query_bairro.order_by(Expositor.nome.asc()).all()
+        query_com_foto = query_com_foto.filter(Expositor.bairro == bairro_filtro)
+    meu_bairro = query_com_foto.order_by(Expositor.nome.asc()).all()
 
-    # "Outros Expositores": por padrão reaproveita os mesmos aprovados sem
-    # destaque (mesma lista de "Engrena Meu Bairro", sem filtro de bairro).
-    # Avisar Leandro se a intenção for outra (ex: paginação, outra categoria).
+    # Outros Expositores — SEM foto (quem se cadastrou pelo formulário
+    # público e foi aprovado, mas o admin ainda não colocou foto).
+    # Lista simples, sem card/imagem.
     outros = (
-        Expositor.query.filter_by(status="aprovado", destaque=False)
+        Expositor.query.filter(
+            Expositor.status == "aprovado",
+            Expositor.destaque == False,
+            db.or_(Expositor.foto.is_(None), Expositor.foto == ""),
+        )
         .order_by(Expositor.criado_em.desc())
         .all()
     )
