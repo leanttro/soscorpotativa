@@ -224,6 +224,40 @@ img { max-width: 100%; display: block; }
   border: 1px dashed var(--border); border-radius: 12px;
 }
 
+/* lista simples (sem foto) — usada em "Meu Bairro" e "Outros Expositores",
+   já que quem se cadastra pelo formulário público não envia foto */
+.eng-list {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; background: var(--white);
+}
+.eng-list-item {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.25rem; padding: 1.15rem 1.5rem;
+  border-bottom: 1px solid var(--border); transition: background .2s;
+}
+.eng-list-item:last-child { border-bottom: none; }
+.eng-list-item:hover { background: var(--cream); }
+.eng-list-info h3 {
+  font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
+  color: var(--navy); margin-bottom: .4rem;
+}
+.eng-list-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+.eng-list-link {
+  display: inline-flex; align-items: center; gap: .4rem; flex-shrink: 0;
+  color: var(--navy); font-size: .83rem; font-weight: 700; transition: gap .2s;
+}
+.eng-list-item:hover .eng-list-link { gap: .7rem; color: var(--gold); }
+.eng-list-empty {
+  text-align: center; padding: 3rem 1rem;
+  color: var(--muted); font-size: .9rem; background: var(--white);
+  border: 1px dashed var(--border); border-radius: 12px;
+}
+@media (max-width: 560px) {
+  .eng-list-item { flex-direction: column; align-items: flex-start; gap: .6rem; }
+  .eng-list-link { align-self: flex-end; }
+}
+
 .sep {
   height: 6px;
   background: linear-gradient(90deg, var(--navy), var(--gold), var(--navy));
@@ -488,32 +522,22 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
     </div>
 
     {% if outros and outros|length > 0 %}
-      <div class="eng-grid">
+      <div class="eng-list">
         {% for e in outros %}
-        <a href="/engrena/{{ e.slug }}" class="produto-card reveal" style="transition-delay:{{ loop.index0 * 0.05 }}s">
-          <div class="produto-img">
-            {% if e.foto %}
-              <img src="{{ e.foto }}" alt="{{ e.nome }}" loading="lazy">
-            {% else %}
-              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.15)">
-                <i data-lucide="store" style="width:48px;height:48px"></i>
-              </div>
-            {% endif %}
-          </div>
-          <div class="produto-body">
+        <a href="/engrena/{{ e.slug }}" class="eng-list-item reveal" style="transition-delay:{{ loop.index0 * 0.03 }}s">
+          <div class="eng-list-info">
             <h3>{{ e.nome }}</h3>
-            <div class="eng-card-tags">
+            <div class="eng-list-tags">
               {% if e.categoria %}<span class="eng-chip"><i data-lucide="tag" style="width:11px;height:11px"></i>{{ e.categoria }}</span>{% endif %}
               {% if e.bairro %}<span class="eng-chip bairro"><i data-lucide="map-pin" style="width:11px;height:11px"></i>{{ e.bairro }}</span>{% endif %}
             </div>
-            <p>{{ e.descricao_curta | truncate(110) if e.descricao_curta else '' }}</p>
-            <span class="servico-link">Ver detalhes <i data-lucide="arrow-right" style="width:14px;height:14px"></i></span>
           </div>
+          <span class="eng-list-link">Ver detalhes <i data-lucide="arrow-right" style="width:14px;height:14px"></i></span>
         </a>
         {% endfor %}
       </div>
     {% else %}
-      <div class="eng-grid"><div class="eng-empty">Nenhum outro expositor cadastrado ainda.</div></div>
+      <div class="eng-list-empty">Nenhum outro expositor cadastrado ainda.</div>
     {% endif %}
   </div>
 </section>
@@ -572,16 +596,12 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
             </div>
           </div>
           <div class="form-group">
-            <label>Foto (link da imagem)</label>
-            <input type="url" name="foto" placeholder="https://...">
-          </div>
-          <div class="form-group">
             <label>Descrição curta</label>
             <textarea name="descricao_curta" placeholder="Conte em poucas linhas o que seu negócio oferece..."></textarea>
           </div>
           <label class="form-check">
             <input type="checkbox" name="autorizacao_divulgacao">
-            Autorizo a divulgação dos meus dados e da minha foto no site e materiais do Engrena Meu Bairro.
+            Autorizo a divulgação dos meus dados no site e materiais do Engrena Meu Bairro.
           </label>
           <button type="submit" class="btn-navy" style="width:100%;justify-content:center">
             <span class="btn-text-wrapper" style="display:inline-flex;align-items:center;gap:.5rem"><i data-lucide="send" style="width:16px;height:16px"></i> Enviar cadastro</span>
