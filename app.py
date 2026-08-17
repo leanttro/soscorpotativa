@@ -99,6 +99,33 @@ class Lead(db.Model):
         return f"<Lead {self.nome}>"
 
 
+# NOVO — Engrena Meu Bairro
+class Expositor(db.Model):
+    __tablename__ = "sos_expositores"
+
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(200), nullable=False)
+    slug = db.Column(db.String(220), unique=True, nullable=False)
+    categoria = db.Column(db.String(120))
+    bairro = db.Column(db.String(120))
+    whatsapp = db.Column(db.String(40))
+    endereco = db.Column(db.String(300))
+    site = db.Column(db.String(300))
+    rede_social = db.Column(db.String(300))
+    descricao_curta = db.Column(db.Text)
+    foto = db.Column(db.String(500))
+    autorizacao_divulgacao = db.Column(db.Boolean, default=False)
+    status = db.Column(db.String(20), default="pendente")  # pendente / aprovado / recusado
+    destaque = db.Column(db.Boolean, default=False)  # aparece em "Engrena Jardim Aeroporto"
+    cupom_codigo = db.Column(db.String(60))
+    cupom_descricao = db.Column(db.String(300))
+    criado_em = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"<Expositor {self.nome}>"
+# FIM NOVO — Engrena Meu Bairro
+
+
 # AdminUser / sos_admin_users NÃO é mais usado para login (o login agora é
 # único, feito pelo app da Oficina — ver login_obrigatorio abaixo).
 # A classe e a tabela ficam aqui só por compatibilidade; nada as apaga.
@@ -191,6 +218,94 @@ def captura_lead(slug_loja):
     except Exception as e:
         db.session.rollback()
         return jsonify({"sucesso": False, "erro": str(e)}), 500
+
+
+# NOVO — Engrena Meu Bairro (rotas públicas)
+def _gerar_slug_unico_expositor(nome):
+    base = slugify(nome or "expositor")
+    slug = base
+    contador = 2
+    while Expositor.query.filter_by(slug=slug).first() is not None:
+        slug = f"{base}-{contador}"
+        contador += 1
+    return slug
+
+
+@app.route("/engrena")
+def engrena_index():
+    bairro_filtro = request.args.get("bairro", "").strip()
+
+    destaque = (
+        Expositor.query.filter_by(status="aprovado", destaque=True)
+        .order_by(Expositor.nome.asc())
+        .all()
+    )
+
+    query_bairro = Expositor.query.filter_by(status="aprovado", destaque=False)
+    if bairro_filtro:
+        query_bairro = query_bairro.filter(Expositor.bairro == bairro_filtro)
+    meu_bairro = query_bairro.order_by(Expositor.nome.asc()).all()
+
+    # "Outros Expositores": por padrão reaproveita os mesmos aprovados sem
+    # destaque (mesma lista de "Engrena Meu Bairro", sem filtro de bairro).
+    # Avisar Leandro se a intenção for outra (ex: paginação, outra categoria).
+    outros = (
+        Expositor.query.filter_by(status="aprovado", destaque=False)
+        .order_by(Expositor.criado_em.desc())
+        .all()
+    )
+
+    bairros_disponiveis = sorted({
+        e.bairro for e in Expositor.query.filter_by(status="aprovado").all() if e.bairro
+    })
+
+    return render_template(
+        "engrena.html",
+        loja=LOJA,
+        destaque=destaque,
+        meu_bairro=meu_bairro,
+        outros=outros,
+        bairros_disponiveis=bairros_disponiveis,
+        bairro_filtro=bairro_filtro,
+    )
+
+
+@app.route("/engrena/<slug>")
+def engrena_detalhe(slug):
+    expositor = Expositor.query.filter_by(slug=slug, status="aprovado").first_or_404()
+    return render_template("engrena_detalhe.html", loja=LOJA, expositor=expositor)
+
+
+@app.route("/engrena/cadastro", methods=["POST"])
+def engrena_cadastro():
+    try:
+        nome = request.form.get("nome", "").strip()
+        whatsapp = request.form.get("whatsapp", "").strip()
+
+        if not nome or not whatsapp:
+            return jsonify({"sucesso": False, "erro": "Nome da empresa e WhatsApp são obrigatórios."}), 400
+
+        expositor = Expositor(
+            nome=nome,
+            slug=_gerar_slug_unico_expositor(nome),
+            categoria=request.form.get("categoria", "").strip(),
+            bairro=request.form.get("bairro", "").strip(),
+            whatsapp=whatsapp,
+            endereco=request.form.get("endereco", "").strip(),
+            site=request.form.get("site", "").strip(),
+            rede_social=request.form.get("rede_social", "").strip(),
+            descricao_curta=request.form.get("descricao_curta", "").strip(),
+            foto=request.form.get("foto", "").strip(),
+            autorizacao_divulgacao=request.form.get("autorizacao_divulgacao") in ("on", "true", "1", "True"),
+            status="pendente",
+        )
+        db.session.add(expositor)
+        db.session.commit()
+        return jsonify({"sucesso": True})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"sucesso": False, "erro": str(e)}), 500
+# FIM NOVO — Engrena Meu Bairro (rotas públicas)
 
 
 # ─────────────────────────────────────────────
