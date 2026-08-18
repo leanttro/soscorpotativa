@@ -158,8 +158,12 @@ img { max-width: 100%; display: block; }
 .eng-hero-inner .tag-label { color: var(--gold2); }
 .eng-hero-inner h1 { font-size: clamp(2.4rem,4.5vw,3.6rem); color: #fff; font-weight: 700; margin-bottom: 1.25rem; }
 .eng-hero-inner h1 em { color: var(--gold2); font-style: italic; }
-.eng-hero-inner p { font-size: 1rem; color: rgba(255,255,255,0.68); line-height: 1.9; margin-bottom: 2rem; font-weight: 300; max-width: 560px; }
-.eng-hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.eng-hero-inner p { font-size: 1rem; color: rgba(255,255,255,0.68); line-height: 1.9; margin-bottom: 1rem; font-weight: 300; max-width: 560px; }
+.eng-hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  margin-top: 2.5rem; padding-top: 2.25rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
 .eng-hero-btn-outline {
   display: inline-flex; align-items: center; gap: .5rem;
   background: transparent; color: rgba(255,255,255,0.85);
@@ -198,23 +202,23 @@ img { max-width: 100%; display: block; }
   flex-direction: column; transition: all .3s;
 }
 .produto-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-.produto-img { height: 190px; overflow: hidden; background: var(--navy); }
+.produto-img { aspect-ratio: 1 / 1; overflow: hidden; background: var(--navy); }
 .produto-img img { width:100%; height:100%; object-fit:cover; transition: transform .5s; }
 .produto-card:hover .produto-img img { transform: scale(1.05); }
-.produto-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
-.produto-body h3 { font-size: 1.1rem; color: var(--navy); margin-bottom: .5rem; }
-.eng-card-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .8rem; }
+.produto-body { padding: 1.1rem; flex: 1; display: flex; flex-direction: column; }
+.produto-body h3 { font-size: .98rem; color: var(--navy); margin-bottom: .35rem; }
+.eng-card-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .6rem; }
 .eng-chip {
-  display: inline-flex; align-items: center; gap: .35rem;
+  display: inline-flex; align-items: center; gap: .3rem;
   background: rgba(27,58,107,0.07); color: var(--navy);
-  font-size: .72rem; font-weight: 600; padding: .3rem .65rem; border-radius: 20px;
+  font-size: .68rem; font-weight: 600; padding: .25rem .55rem; border-radius: 20px;
 }
 .eng-chip.bairro { background: rgba(184,146,58,0.13); color: var(--gold); }
-.produto-body p { font-size: .87rem; color: var(--muted); line-height: 1.7; flex: 1; }
+.produto-body p { font-size: .82rem; color: var(--muted); line-height: 1.6; flex: 1; }
 .servico-link {
   display: inline-flex; align-items: center; gap: .4rem;
-  color: var(--navy); font-size: .83rem; font-weight: 700;
-  margin-top: 1.25rem; letter-spacing: .02em; transition: gap .2s;
+  color: var(--navy); font-size: .8rem; font-weight: 700;
+  margin-top: 1rem; letter-spacing: .02em; transition: gap .2s;
 }
 .produto-card:hover .servico-link { gap: .7rem; color: var(--gold); }
 
@@ -392,15 +396,15 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
   <div class="eng-hero-pattern"></div>
   <div class="container">
     <div class="eng-hero-inner">
-      <span class="tag-label">Uma iniciativa SOS Corporativa</span>
+      <span class="tag-label">Projeto Engrena Meu Bairro</span>
       <h1>Engrena <em>Meu Bairro</em></h1>
       <p>
-        O diretório gratuito de negócios locais que conecta moradores e empresas do Jardim Aeroporto e região. Encontre prestadores de confiança perto de você e ajude o comércio do seu bairro a crescer.
+        O Engrena Meu Bairro é um projeto que conecta moradores e negócios locais, criando um diretório gratuito de prestadores de confiança em cada bairro onde chega. A ideia é simples: ajudar o comércio local a ser encontrado e fortalecer a economia de quem já faz parte da vizinhança.
       </p>
       <div class="eng-hero-actions">
         <a href="#eng-jardim-aeroporto" class="btn-gold">
           <i data-lucide="map-pin" style="width:16px;height:16px"></i>
-          Ver expositores
+          Ver empresas
         </a>
         <a href="#eng-cadastro" class="eng-hero-btn-outline">
           <i data-lucide="store" style="width:16px;height:16px"></i>
@@ -416,9 +420,9 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
   <div class="container">
     <div class="eng-section-header reveal">
       <div>
-        <span class="tag-label">Destaque</span>
+        <span class="tag-label">Bairro-sede</span>
         <h2>Engrena Jardim Aeroporto</h2>
-        <p>Os negócios em destaque do nosso bairro-sede, selecionados pela equipe Engrena.</p>
+        <p>O Jardim Aeroporto foi o primeiro bairro a receber o Engrena. Aqui reunimos negócios locais de confiança, ajudando moradores a encontrar quem já faz parte da vizinhança e fortalecendo o comércio da região.</p>
       </div>
     </div>
 
