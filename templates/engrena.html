@@ -195,14 +195,14 @@ img { max-width: 100%; display: block; }
 .eng-filtro select:focus { border-color: var(--navy); }
 
 /* grid + card (mesmo estilo visual do produto-card) */
-.eng-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.eng-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
 .produto-card {
   background: var(--white); border: 1px solid var(--border);
   border-radius: 12px; overflow: hidden; display: flex;
   flex-direction: column; transition: all .3s;
 }
 .produto-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-.produto-img { aspect-ratio: 1 / 1; overflow: hidden; background: var(--navy); }
+.produto-img { aspect-ratio: 1.25 / 1; overflow: hidden; background: var(--navy); }
 .produto-img img { width:100%; height:100%; object-fit:cover; transition: transform .5s; }
 .produto-card:hover .produto-img img { transform: scale(1.05); }
 .produto-body { padding: 1.1rem; flex: 1; display: flex; flex-direction: column; }
