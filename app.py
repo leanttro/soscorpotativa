@@ -125,6 +125,22 @@ class Expositor(db.Model):
         return f"<Expositor {self.nome}>"
 # FIM NOVO — Engrena Meu Bairro
 
+# NOVO — Engrena Meu Bairro: moradores que se cadastram na landing
+class Morador(db.Model):
+    __tablename__ = "sos_moradores"
+
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(200), nullable=False)
+    telefone = db.Column(db.String(40), nullable=False)
+    bairro = db.Column(db.String(120))
+    cep = db.Column(db.String(12))
+    origem = db.Column(db.String(60), default="landing-engrena")
+    criado_em = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"<Morador {self.nome}>"
+# FIM NOVO — Morador
+
 
 # AdminUser / sos_admin_users NÃO é mais usado para login (o login agora é
 # único, feito pelo app da Oficina — ver login_obrigatorio abaixo).
@@ -318,6 +334,52 @@ def engrena_cadastro():
     except Exception as e:
         db.session.rollback()
         return jsonify({"sucesso": False, "erro": str(e)}), 500
+
+
+# Cadastro de MORADOR (vem da landing "Engrena Meu Bairro", que fica em outro domínio,
+# por isso a rota libera CORS só para ela). Origens permitidas: env ENGRENA_LANDING_ORIGINS
+# (separadas por vírgula, ex.: "https://engrenameubairro.com.br,https://www.engrenameubairro.com.br").
+# Se a env não existir, libera qualquer origem (a rota é pública e não usa cookie/sessão).
+@app.after_request
+def _cors_cadastro_morador(resp):
+    if request.path == "/engrena/cadastro-morador":
+        permitidas = [o.strip() for o in os.environ.get("ENGRENA_LANDING_ORIGINS", "*").split(",") if o.strip()]
+        origem = request.headers.get("Origin", "")
+        if "*" in permitidas:
+            resp.headers["Access-Control-Allow-Origin"] = "*"
+        elif origem in permitidas:
+            resp.headers["Access-Control-Allow-Origin"] = origem
+            resp.headers["Vary"] = "Origin"
+        resp.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    return resp
+
+
+@app.route("/engrena/cadastro-morador", methods=["POST", "OPTIONS"])
+def engrena_cadastro_morador():
+    if request.method == "OPTIONS":
+        return ("", 204)
+    try:
+        # campo-isca (honeypot): humanos não preenchem; robôs sim. Finge sucesso e não grava.
+        if request.form.get("empresa_site", "").strip():
+            return jsonify({"sucesso": True})
+
+        nome = request.form.get("nome", "").strip()[:200]
+        telefone = request.form.get("telefone", "").strip()[:40]
+        bairro = request.form.get("bairro", "").strip()[:120]
+        cep = request.form.get("cep", "").strip()[:12]
+        origem = (request.form.get("origem", "") or "landing-engrena").strip()[:60]
+
+        digitos = "".join(ch for ch in telefone if ch.isdigit())
+        if not nome or len(digitos) < 10 or not bairro:
+            return jsonify({"sucesso": False, "erro": "Preencha nome, telefone com DDD e bairro."}), 400
+
+        db.session.add(Morador(nome=nome, telefone=telefone, bairro=bairro, cep=cep, origem=origem))
+        db.session.commit()
+        return jsonify({"sucesso": True})
+    except Exception:
+        db.session.rollback()
+        return jsonify({"sucesso": False, "erro": "Não foi possível salvar agora."}), 500
 # FIM NOVO — Engrena Meu Bairro (rotas públicas)
 
 
