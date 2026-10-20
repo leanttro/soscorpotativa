@@ -173,6 +173,95 @@ img { max-width: 100%; display: block; }
 }
 .eng-hero-btn-outline:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
 
+/* hero em 2 colunas */
+#eng-hero { padding: 8.5rem 0 4.5rem; }
+.eng-hero-grid {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1.05fr .95fr;
+  align-items: center; gap: 4.5rem;
+}
+.eng-hero-grid .eng-hero-inner { max-width: none; }
+.eng-hero-grid .eng-hero-inner p { max-width: 540px; }
+.eng-hero-glow {
+  position: absolute; width: 620px; height: 620px; right: -140px; top: 50%;
+  transform: translateY(-50%); border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(212,168,75,.22) 0%, transparent 65%);
+}
+.eng-gear { position: absolute; color: #fff; pointer-events: none; }
+.eng-gear.g1 { width: 380px; right: -90px; bottom: -120px; opacity: .05; animation: engSpin 60s linear infinite; }
+.eng-gear.g2 { width: 190px; left: 42%; top: -70px; opacity: .045; animation: engSpin 40s linear infinite reverse; }
+
+/* mini estatísticas */
+.eng-hero-stats {
+  display: flex; gap: 0; margin-top: 2.25rem;
+}
+.eng-hero-stat { padding: 0 1.6rem; border-left: 1px solid rgba(255,255,255,.14); }
+.eng-hero-stat:first-child { padding-left: 0; border-left: none; }
+.eng-hero-stat strong {
+  display: block; font-family: 'Cormorant Garamond', serif;
+  font-size: 1.9rem; line-height: 1; color: var(--gold2); font-weight: 700;
+}
+.eng-hero-stat span { display: block; margin-top: .4rem; font-size: .74rem; color: rgba(255,255,255,.6); letter-spacing: .02em; }
+
+/* visual */
+.eng-hero-visual { position: relative; padding: 1.25rem 0 1.25rem 1.5rem; animation: engIn .9s .15s both cubic-bezier(.2,.7,.2,1); }
+.eng-hero-visual::before {
+  content: ''; position: absolute; inset: 0 1.5rem 0 0; border: 1.5px solid rgba(212,168,75,.55);
+  border-radius: 30px; transform: rotate(-3deg);
+}
+.eng-hero-photo {
+  position: relative; aspect-ratio: 4 / 3.9; border-radius: 28px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 40px 80px rgba(5,15,35,.5);
+  background: var(--navy2);
+}
+.eng-hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.eng-hero-photo::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(13,32,64,0) 45%, rgba(13,32,64,.55) 100%);
+}
+.eng-hero-routes { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
+.eng-float {
+  position: absolute; z-index: 3; display: flex; align-items: center; gap: .8rem;
+  padding: .85rem 1.1rem .85rem .85rem; border-radius: 14px;
+  background: rgba(255,255,255,.96); color: var(--navy);
+  box-shadow: 0 18px 40px rgba(5,15,35,.35);
+  animation: engFloat 6s ease-in-out infinite;
+}
+.eng-float .ic {
+  width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
+  display: grid; place-items: center; background: var(--navy); color: var(--gold2);
+}
+.eng-float b { display: block; font-size: .86rem; line-height: 1.2; }
+.eng-float small { display: block; margin-top: .15rem; font-size: .72rem; color: var(--muted); }
+.eng-float.f1 { top: 2.4rem; left: -1.6rem; }
+.eng-float.f2 { right: -.4rem; bottom: 4.9rem; animation-delay: -3s; }
+.eng-float.f2 .ic { background: var(--gold); color: #fff; }
+.eng-float.f3 { left: 1.6rem; bottom: 1.4rem; padding: .6rem 1rem; gap: .55rem; background: rgba(13,32,64,.82); color: #fff; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.16); animation-delay: -1.5s; }
+.eng-float.f3 i { color: var(--gold2); }
+.eng-float.f3 span { font-size: .78rem; font-weight: 600; }
+
+@keyframes engSpin { to { transform: rotate(360deg); } }
+@keyframes engFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+@keyframes engIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .eng-gear, .eng-float, .eng-hero-visual { animation: none; }
+}
+@media (max-width: 1024px) {
+  .eng-hero-grid { grid-template-columns: 1fr; gap: 3.5rem; }
+  .eng-hero-visual { max-width: 520px; width: 100%; margin: 0 auto; }
+  .eng-gear.g2 { display: none; }
+}
+@media (max-width: 560px) {
+  #eng-hero { padding: 8rem 0 4rem; }
+  .eng-hero-stat { padding: 0 1rem; }
+  .eng-hero-stat strong { font-size: 1.5rem; }
+  .eng-hero-visual { padding: 1rem 0 1rem 1rem; }
+  .eng-float.f1 { left: -.4rem; top: 1.6rem; }
+  .eng-float.f2 { right: -.4rem; bottom: 3.4rem; }
+  .eng-float.f3 { display: none; }
+}
+
 /* ─── SEÇÕES DE EXPOSITORES ─── */
 .eng-section { padding: 5.5rem 0; }
 .eng-section.alt { background: var(--cream); }
@@ -394,23 +483,68 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
 <!-- ═══ HERO ═══ -->
 <section id="eng-hero">
   <div class="eng-hero-pattern"></div>
+  <div class="eng-hero-glow"></div>
+  <div class="eng-gear g1"><svg viewBox="0 0 200 200" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="M178.0 100.0 L195.9 105.2 L194.6 116.3 L176.0 117.4 L176.0 117.4 L170.3 133.8 L184.1 146.2 L178.2 155.7 L161.0 148.6 L161.0 148.6 L148.6 161.0 L155.7 178.2 L146.2 184.1 L133.8 170.3 L133.8 170.3 L117.4 176.0 L116.3 194.6 L105.2 195.9 L100.0 178.0 L100.0 178.0 L82.6 176.0 L73.6 192.3 L63.1 188.6 L66.2 170.3 L66.2 170.3 L51.4 161.0 L36.2 171.7 L28.3 163.8 L39.0 148.6 L39.0 148.6 L29.7 133.8 L11.4 136.9 L7.7 126.4 L24.0 117.4 L24.0 117.4 L22.0 100.0 L4.1 94.8 L5.4 83.7 L24.0 82.6 L24.0 82.6 L29.7 66.2 L15.9 53.8 L21.8 44.3 L39.0 51.4 L39.0 51.4 L51.4 39.0 L44.3 21.8 L53.8 15.9 L66.2 29.7 L66.2 29.7 L82.6 24.0 L83.7 5.4 L94.8 4.1 L100.0 22.0 L100.0 22.0 L117.4 24.0 L126.4 7.7 L136.9 11.4 L133.8 29.7 L133.8 29.7 L148.6 39.0 L163.8 28.3 L171.7 36.2 L161.0 51.4 L161.0 51.4 L170.3 66.2 L188.6 63.1 L192.3 73.6 L176.0 82.6 L176.0 82.6Z M134 100 a34 34 0 1 0 -68 0 a34 34 0 1 0 68 0Z"/></svg></div>
+  <div class="eng-gear g2"><svg viewBox="0 0 200 200" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="M178.0 100.0 L195.9 105.2 L194.6 116.3 L176.0 117.4 L176.0 117.4 L170.3 133.8 L184.1 146.2 L178.2 155.7 L161.0 148.6 L161.0 148.6 L148.6 161.0 L155.7 178.2 L146.2 184.1 L133.8 170.3 L133.8 170.3 L117.4 176.0 L116.3 194.6 L105.2 195.9 L100.0 178.0 L100.0 178.0 L82.6 176.0 L73.6 192.3 L63.1 188.6 L66.2 170.3 L66.2 170.3 L51.4 161.0 L36.2 171.7 L28.3 163.8 L39.0 148.6 L39.0 148.6 L29.7 133.8 L11.4 136.9 L7.7 126.4 L24.0 117.4 L24.0 117.4 L22.0 100.0 L4.1 94.8 L5.4 83.7 L24.0 82.6 L24.0 82.6 L29.7 66.2 L15.9 53.8 L21.8 44.3 L39.0 51.4 L39.0 51.4 L51.4 39.0 L44.3 21.8 L53.8 15.9 L66.2 29.7 L66.2 29.7 L82.6 24.0 L83.7 5.4 L94.8 4.1 L100.0 22.0 L100.0 22.0 L117.4 24.0 L126.4 7.7 L136.9 11.4 L133.8 29.7 L133.8 29.7 L148.6 39.0 L163.8 28.3 L171.7 36.2 L161.0 51.4 L161.0 51.4 L170.3 66.2 L188.6 63.1 L192.3 73.6 L176.0 82.6 L176.0 82.6Z M134 100 a34 34 0 1 0 -68 0 a34 34 0 1 0 68 0Z"/></svg></div>
   <div class="container">
-    <div class="eng-hero-inner">
-      <span class="tag-label">Projeto Engrena Meu Bairro</span>
-      <h1>Engrena <em>Meu Bairro</em></h1>
-      <p>
-        O Engrena Meu Bairro é um projeto que conecta moradores e negócios locais, criando um diretório gratuito de prestadores de confiança em cada bairro onde chega. A ideia é simples: ajudar o comércio local a ser encontrado e fortalecer a economia de quem já faz parte da vizinhança.
-      </p>
-      <div class="eng-hero-actions">
-        <a href="#eng-jardim-aeroporto" class="btn-gold">
-          <i data-lucide="map-pin" style="width:16px;height:16px"></i>
-          Ver empresas
-        </a>
-        <a href="#eng-cadastro" class="eng-hero-btn-outline">
-          <i data-lucide="store" style="width:16px;height:16px"></i>
-          Cadastrar meu negócio
-        </a>
+    <div class="eng-hero-grid">
+
+      <div class="eng-hero-inner">
+        <span class="tag-label">Projeto Engrena Meu Bairro</span>
+        <h1>Engrena <em>Meu Bairro</em></h1>
+        <p>
+          O Engrena Meu Bairro é um projeto que conecta moradores e negócios locais, criando um diretório gratuito de prestadores de confiança em cada bairro onde chega. A ideia é simples: ajudar o comércio local a ser encontrado e fortalecer a economia de quem já faz parte da vizinhança.
+        </p>
+
+        <div class="eng-hero-stats">
+          <div class="eng-hero-stat"><strong>100%</strong><span>Gratuito para usar</span></div>
+          <div class="eng-hero-stat"><strong>2 min</strong><span>Para cadastrar seu negócio</span></div>
+          <div class="eng-hero-stat"><strong>Bairro</strong><span>Filtre por região</span></div>
+        </div>
+
+        <div class="eng-hero-actions">
+          <a href="#eng-jardim-aeroporto" class="btn-gold">
+            <i data-lucide="map-pin" style="width:16px;height:16px"></i>
+            Ver empresas
+          </a>
+          <a href="#eng-cadastro" class="eng-hero-btn-outline">
+            <i data-lucide="store" style="width:16px;height:16px"></i>
+            Cadastrar meu negócio
+          </a>
+        </div>
       </div>
+
+      <div class="eng-hero-visual">
+        <div class="eng-hero-photo">
+          <img src="https://directus.leanttro.com/assets/66d24cb4-aa66-4c3e-8447-0edcdb3b4735?quality=80&format=webp" alt="Comércio local e pessoas movimentando o bairro" fetchpriority="high">
+          <svg class="eng-hero-routes" viewBox="0 0 420 480" preserveAspectRatio="none" aria-hidden="true">
+            <g fill="none" stroke="#fff" stroke-width="2.2" opacity=".55" stroke-dasharray="2 7" stroke-linecap="round">
+              <path d="M60 0 110 90 80 170 190 220 170 300 290 360 330 480"/>
+              <path d="M0 140 100 175 190 125 280 165 420 120"/>
+            </g>
+            <g fill="#B8923A" stroke="#fff" stroke-width="2.2">
+              <path d="M270 150c-11 0-20 9-20 20 0 15 20 34 20 34s20-19 20-34c0-11-9-20-20-20Z"/>
+              <circle cx="270" cy="170" r="6" fill="#fff"/>
+              <path d="M120 250c-11 0-20 9-20 20 0 15 20 34 20 34s20-19 20-34c0-11-9-20-20-20Z"/>
+              <circle cx="120" cy="270" r="6" fill="#fff"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="eng-float f1">
+          <div class="ic"><i data-lucide="map-pin" style="width:20px;height:20px"></i></div>
+          <div><b>Negócios perto de você</b><small>Jardim Aeroporto e região</small></div>
+        </div>
+        <div class="eng-float f2">
+          <div class="ic"><i data-lucide="badge-check" style="width:20px;height:20px"></i></div>
+          <div><b>Prestadores de confiança</b><small>Cadastro gratuito</small></div>
+        </div>
+        <div class="eng-float f3">
+          <i data-lucide="heart-handshake" style="width:16px;height:16px"></i>
+          <span>Feito pela e para a comunidade</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -545,6 +679,507 @@ footer { background: var(--navy3); padding: 5rem 0 0; }
     {% endif %}
   </div>
 </section>
+
+
+<!-- ═══ ENGRENA MEU BAIRRO (PREVIEW) ═══ -->
+<section class="engrena-section" id="engrena-preview">
+  <div class="engrena-container">
+
+    <!-- TEXTO -->
+    <div class="engrena-content">
+
+      <span class="engrena-tag">
+        UMA INICIATIVA SOS CORPORATIVA
+      </span>
+
+      <h2>
+        O bairro cresce<br>
+        quando todo mundo<br>
+        <span>se conecta.</span>
+      </h2>
+
+      <p class="engrena-description">
+        Conheça o Engrena Meu Bairro: uma rede gratuita
+        que aproxima moradores, pequenos negócios
+        e prestadores de confiança.
+      </p>
+
+      <div class="engrena-benefits">
+
+        <div class="engrena-benefit">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 20h38L38 10H10L5 20Z"/>
+            <path d="M8 20v22h32V20"/>
+            <path d="M18 42V29h12v13"/>
+            <path d="M5 20c0 5 7 5 7 0 0 5 7 5 7 0 0 5 7 5 7 0 0 5 7 5 7 0 0 5 7 5 7 0"/>
+          </svg>
+          <span>Negócios<br>locais</span>
+        </div>
+
+        <div class="engrena-benefit">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M40 20c0 12-16 25-16 25S8 32 8 20a16 16 0 1 1 32 0Z"/>
+            <circle cx="24" cy="20" r="5"/>
+          </svg>
+          <span>Perto<br>de você</span>
+        </div>
+
+        <div class="engrena-benefit">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 4 42 11v12c0 11-8 17-18 21C14 40 6 34 6 23V11L24 4Z"/>
+            <path d="m16 24 6 6 11-12"/>
+          </svg>
+          <span>100%<br>gratuito</span>
+        </div>
+
+      </div>
+
+      <div class="engrena-actions">
+        <a href="https://www.engrenameubairro.com.br/"
+          target="_blank" rel="noopener"
+          class="engrena-btn">
+          Explorar meu bairro
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7M7 7h10v10"/>
+          </svg>
+        </a>
+
+        <a href="#eng-meu-bairro"
+          class="engrena-link">
+          Ver negócios locais
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- IMAGEM -->
+    <div class="engrena-visual">
+      <img
+        src="https://directus.leanttro.com/assets/66d24cb4-aa66-4c3e-8447-0edcdb3b4735?quality=80&format=webp"
+        loading="lazy"
+        alt="Comércio local e pessoas movimentando o bairro"
+      >
+
+      <div class="engrena-map-overlay" aria-hidden="true">
+        <svg viewBox="0 0 420 500" preserveAspectRatio="none">
+          <g fill="none" stroke="#ffffff" stroke-width="2.5"
+            opacity=".75">
+            <path d="M100 0 160 85 125 155 230 205 205 285 315 350 350 500"/>
+            <path d="M0 130 100 165 190 115 280 155 420 110"/>
+            <path d="M40 300 145 250 240 315 335 260 420 300"/>
+            <path d="M190 0 235 90 300 120 350 70 420 90"/>
+          </g>
+          <g fill="#ff7900" stroke="#ffffff" stroke-width="2.5">
+            <path d="M160 70c-14 0-25 11-25 25 0 19 25 43 25 43s25-24 25-43c0-14-11-25-25-25Z"/>
+            <circle cx="160" cy="95" r="7" fill="#fff"/>
+            <path d="M275 145c-12 0-22 10-22 22 0 17 22 38 22 38s22-21 22-38c0-12-10-22-22-22Z"/>
+            <circle cx="275" cy="167" r="6" fill="#fff"/>
+            <path d="M350 35c-12 0-22 10-22 22 0 17 22 38 22 38s22-21 22-38c0-12-10-22-22-22Z"/>
+            <circle cx="350" cy="57" r="6" fill="#fff"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+/* ===== ENGRENA MEU BAIRRO ===== */
+.engrena-section {
+  --engrena-navy: #0b3158;
+  --engrena-orange: #ff7900;
+  --engrena-cream: #f4f8ef;
+
+  width: 100%;
+  padding: 64px 24px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(ellipse at 0% 0%,
+      #dfead6 0%, transparent 32%),
+    radial-gradient(ellipse at 100% 100%,
+      #e5efdc 0%, transparent 35%),
+    var(--engrena-cream);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+.engrena-section *,
+.engrena-section *::before,
+.engrena-section *::after {
+  box-sizing: border-box;
+}
+
+.engrena-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.02fr 1fr;
+  width: 100%;
+  max-width: 1450px;
+  min-height: 560px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 38px;
+  background: var(--engrena-navy);
+  box-shadow: 0 24px 65px rgba(11, 49, 88, .12);
+}
+
+/* Painel de conteúdo */
+.engrena-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 48px 24px 48px 56px;
+  color: #fff;
+}
+
+.engrena-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  margin-bottom: 28px;
+  padding: 8px 17px;
+  border: 2px solid var(--engrena-orange);
+  border-radius: 50px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.4;
+}
+
+.engrena-content h2 {
+  margin: 0 0 24px;
+  color: #fff;
+  font-size: clamp(35px, 3.5vw, 62px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -2px;
+}
+
+.engrena-content h2 span {
+  color: var(--engrena-orange);
+}
+
+.engrena-description {
+  max-width: 475px;
+  margin: 0 0 34px;
+  color: #edf3fb;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+/* Benefícios */
+.engrena-benefits {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  max-width: 490px;
+  margin-bottom: 38px;
+}
+
+.engrena-benefit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 0 14px;
+  border-right: 1px solid rgba(255,255,255,.38);
+}
+
+.engrena-benefit:first-child {
+  padding-left: 0;
+}
+
+.engrena-benefit:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+
+.engrena-benefit svg {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 48px;
+  color: var(--engrena-orange);
+}
+
+.engrena-benefit span {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* Botões */
+.engrena-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.engrena-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 60px;
+  padding: 0 25px;
+  border: 2px solid var(--engrena-orange);
+  border-radius: 50px;
+  background: var(--engrena-orange);
+  color: #fff !important;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none !important;
+  transition: background .25s, transform .25s;
+}
+
+.engrena-btn svg,
+.engrena-link svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.engrena-btn:hover {
+  transform: translateY(-3px);
+  background: #e96900;
+  border-color: #e96900;
+}
+
+.engrena-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,.8);
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: color .2s;
+}
+
+.engrena-link:hover {
+  color: #ff9a42 !important;
+}
+
+/* Fotografia */
+.engrena-visual {
+  position: relative;
+  min-width: 0;
+  min-height: 560px;
+  overflow: hidden;
+  border-radius: 38px 0 0 38px;
+  background: #d6e3ce;
+}
+
+.engrena-visual > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.engrena-map-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,.08),
+    transparent 60%
+  );
+}
+
+.engrena-map-overlay svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Tablet */
+@media (max-width: 1050px) {
+  .engrena-section {
+    padding: 40px 20px;
+  }
+
+  .engrena-container {
+    grid-template-columns: 1fr .9fr;
+    min-height: 500px;
+    border-radius: 28px;
+  }
+
+  .engrena-content {
+    padding: 36px 18px 36px 32px;
+  }
+
+  .engrena-content h2 {
+    font-size: clamp(34px, 4.1vw, 46px);
+    letter-spacing: -1.5px;
+  }
+
+  .engrena-description {
+    font-size: 15px;
+  }
+
+  .engrena-benefit {
+    gap: 7px;
+    padding: 0 8px;
+  }
+
+  .engrena-benefit svg {
+    flex-basis: 32px;
+    width: 32px;
+    height: 38px;
+  }
+
+  .engrena-benefit span {
+    font-size: 12px;
+  }
+
+  .engrena-actions {
+    gap: 16px;
+  }
+
+  .engrena-btn {
+    min-height: 52px;
+    padding: 0 19px;
+    font-size: 13px;
+  }
+
+  .engrena-visual {
+    min-height: 500px;
+    border-radius: 28px 0 0 28px;
+  }
+}
+
+/* Celular */
+@media (max-width: 700px) {
+  .engrena-section {
+    padding: 28px 14px;
+  }
+
+  .engrena-container {
+    grid-template-columns: 1fr;
+    border-radius: 24px;
+  }
+
+  .engrena-content {
+    order: 1;
+    padding: 32px 24px 30px;
+  }
+
+  .engrena-tag {
+    min-height: 32px;
+    margin-bottom: 23px;
+    padding: 7px 12px;
+    font-size: 9px;
+    letter-spacing: 1.4px;
+  }
+
+  .engrena-content h2 {
+    margin-bottom: 20px;
+    font-size: clamp(34px, 8.6vw, 48px);
+    line-height: 1.04;
+    letter-spacing: -1.5px;
+  }
+
+  .engrena-description {
+    margin-bottom: 28px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .engrena-benefits {
+    margin-bottom: 28px;
+  }
+
+  .engrena-benefit {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0 12px;
+  }
+
+  .engrena-benefit:first-child {
+    padding-left: 0;
+  }
+
+  .engrena-benefit svg {
+    flex-basis: auto;
+    width: 35px;
+    height: 38px;
+  }
+
+  .engrena-benefit span {
+    font-size: 12px;
+  }
+
+  .engrena-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .engrena-btn {
+    min-height: 54px;
+    padding: 0 22px;
+    font-size: 14px;
+  }
+
+  .engrena-link {
+    font-size: 14px;
+  }
+
+  .engrena-visual {
+    order: 0;
+    min-height: 330px;
+    height: 330px;
+    border-radius: 24px 24px 0 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .engrena-content {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .engrena-content h2 {
+    font-size: 32px;
+  }
+
+  .engrena-benefit {
+    padding: 0 7px;
+  }
+
+  .engrena-benefit span {
+    font-size: 11px;
+  }
+}
+</style>
+
+
+<div class="sep"></div>
 
 <!-- ═══ CADASTRO PÚBLICO ═══ -->
 <section id="eng-cadastro">
