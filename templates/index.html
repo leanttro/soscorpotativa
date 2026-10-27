@@ -1560,6 +1560,7 @@ footer {
     <!-- TEXTO -->
     <div class="engrena-content">
 
+      <div class="engrena-project"><small>Projeto</small><strong>Engrena Meu Bairro</strong></div>
       <span class="engrena-tag">
         UMA INICIATIVA SOS CORPORATIVA
       </span>
@@ -1716,6 +1717,33 @@ footer {
   padding: 48px 24px 48px 56px;
   color: #fff;
 }
+
+.engrena-project {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 18px;
+  padding: 10px 22px 12px;
+  border-left: 5px solid var(--engrena-orange);
+  background: rgba(255,255,255,.08);
+  border-radius: 0 14px 14px 0;
+}
+.engrena-project small {
+  color: var(--engrena-orange);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.engrena-project strong {
+  color: #fff;
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+.oficina-section .engrena-project { border-left-color: #d4a84b; }
+.oficina-section .engrena-project small { color: #d4a84b; }
+.engrena-project + .engrena-tag { display: flex; width: fit-content; margin-top: 0; }
 
 .engrena-tag {
   display: inline-flex;
@@ -2112,10 +2140,11 @@ footer {
 
     <!-- TEXTO -->
     <div class="engrena-content">
+      <div class="engrena-project"><small>Projeto</small><strong>Oficina Empreender SP</strong></div>
       <span class="engrena-tag">UMA INICIATIVA SOS CORPORATIVA</span>
       <h2>Quem cuida<br>de pessoas<br><span>cresce junto.</span></h2>
       <p class="engrena-description">
-        Conheça a Oficina: a comunidade de profissionais e expositores
+        Conheça a Oficina Empreender SP: a comunidade de profissionais e expositores
         de bem-estar que participam das feiras e eventos corporativos
         organizados pela SOS Corporativa.
       </p>
